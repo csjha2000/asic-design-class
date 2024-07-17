@@ -1,5 +1,4 @@
-# ASIC-design-class
-## Task 1 : Create a simple C program and compile it using GCC followed by verification of the program output.
+# Task 1 : Create a simple C program and compile it using GCC followed by verification of the program output.
 ## Abstract : A simple C program which calculates the sum of numbers from 1 to 5 is written and compiled by GCC in the following ways as given below. 
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
