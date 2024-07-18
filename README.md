@@ -1,5 +1,4 @@
-# Task 1 : Create a simple C program and compile it using GCC followed by verification of the program output.
-## Abstract : A simple C program which calculates the sum of numbers from 1 to 5 is written and compiled by GCC in the following ways as given below. 
+# TASK 1 : Create a simple C program and compile it using GCC followed by verification of the program output. 
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
@@ -37,7 +36,67 @@ Here leafpad is the text editor, sum1ton is the name of the file and at last .c 
 ![5](https://github.com/user-attachments/assets/ffc1a40f-2449-4c0a-bce0-1c7add7d0427)
 
 
-# Conclusion : In the above snapshot it is verified the program is compiled successfully and the result is also correct, that is 15 (1+2+3+4+5 = 15).
+ ### Conclusion : In the above snapshot it is verified the program is compiled successfully and the result is also correct, that is 15 (1+2+3+4+5 = 15).
+
+
+ # TASK 2 : Compiling and executing a C program using RISC - V compiler and optimize the compilation using O1 and Ofast.
+
+ ### Step 1 : Write a simple C program in the text editor (leafpad) and save it. You can see contents of the C program below.
+
+ ![1](https://github.com/user-attachments/assets/a454ed04-8a3a-4d5d-9851-9b65a8e079d2)
+
+ ### Step 2 : Now compile the C program using RISC - V compiler using O1 optimization as shown in the snapshot shown below.
+
+ ![3](https://github.com/user-attachments/assets/8e2a2657-fb13-4f58-9373-45a07489fbb1)
+
+ ### Step 3 : Now create the object file (.o) that is the output of the compiler as shown in the procedure shown below.
+
+ ![4](https://github.com/user-attachments/assets/0831e910-36b1-4f02-a61c-2d25b38d0cd2)
+
+ ### Step 4 : As soon as you enter the above command, a huge list of opcode is shown in the terminal.
+
+ ### But we are interested in main section of the program so type : /main as shown below.
+
+ ![5](https://github.com/user-attachments/assets/445b3e20-13d8-458d-b978-2e23d11617a4)
+
+ ### In the snapshot shown below we can see the opcode of the main section.
+
+ ![6](https://github.com/user-attachments/assets/ee57f363-8fff-4dc3-87d0-623df1000896)
+
+ ## Observation 1 : There are 15 lines of opcode in the main section.
+
+ ### Step 5 : Now again compile the same program using RISC - V compiler but now optimise the compilation using Ofast as shown in the snapshot shown below.
+
+ ![7](https://github.com/user-attachments/assets/9949fb6a-ad86-4898-8cfe-77001e6e8cdb)
+
+### Step 6 : Now create the object file (.o) that is the output of the compiler as shown in the procedure shown below.
+
+![8](https://github.com/user-attachments/assets/e5825259-3559-4278-abe3-634ee3be166b)
+
+ ### Step 7 : As soon as you enter the above command, a huge list of opcode is shown in the terminal.
+
+ ### But we are interested in main section of the program so type : /main as shown below.
+
+ ![9](https://github.com/user-attachments/assets/c1b48f69-5459-4f66-9489-a43f03a236e4)
+
+  ### In the snapshot shown below we can see the opcode of the main section.
+
+  ![10](https://github.com/user-attachments/assets/b85f864a-57d8-46f3-bc92-5a1a19579da2)
+
+  ## Observation 2 : There are 12 lines of opcode in the main section.
+
+  ## Conclusion : The compilation in the later procedure is optimised.
+
+
+ 
+
+
+
+
+
+
+
+
 
 
 
