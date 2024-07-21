@@ -2,7 +2,10 @@
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
-This can be done by giving the following command: leafpad sum1ton.c
+This can be done by giving the following command: 
+```
+leafpad sum1ton.c
+```
 
 Here leafpad is the text editor, sum1ton is the name of the file and at last .c represents that it is a C program.
 
@@ -24,14 +27,20 @@ Here leafpad is the text editor, sum1ton is the name of the file and at last .c 
 
 ### Step 4 : Press Ctrl + S in order to save the program that has been written.
 
-### Step 5 : Now compile the program using GCC by giving the following command : gcc sum1on.c and press enter.
+### Step 5 : Now compile the program using GCC by giving the following command :
+```
+gcc sum1on.c
+```
+Press ENTER.
 
 
 ![4](https://github.com/user-attachments/assets/c78c877c-a870-4ea8-bbca-517f5443fe0f)
 
 
-### Step 6 : Now check the output of the program by giving the following command : ./a.out
-
+### Step 6 : Now check the output of the program by giving the following command : 
+```
+./a.out
+```
 
 ![5](https://github.com/user-attachments/assets/ffc1a40f-2449-4c0a-bce0-1c7add7d0427)
 
@@ -56,6 +65,9 @@ Here leafpad is the text editor, sum1ton is the name of the file and at last .c 
  ### Step 4 : As soon as you enter the above command, a huge list of opcode is shown in the terminal.
 
  ### But we are interested in main section of the program so type : /main as shown below.
+ ```
+/main
+```
 
  ![5](https://github.com/user-attachments/assets/445b3e20-13d8-458d-b978-2e23d11617a4)
 
@@ -76,6 +88,9 @@ Here leafpad is the text editor, sum1ton is the name of the file and at last .c 
  ### Step 7 : As soon as you enter the above command, a huge list of opcode is shown in the terminal.
 
  ### But we are interested in main section of the program so type : /main as shown below.
+```
+/main
+```
 
  ![9](https://github.com/user-attachments/assets/c1b48f69-5459-4f66-9489-a43f03a236e4)
 
@@ -86,6 +101,94 @@ Here leafpad is the text editor, sum1ton is the name of the file and at last .c 
   ## Observation 2 : There are 12 lines of opcode in the main section.
 
   ## Conclusion : The compilation in the later procedure is optimised.
+
+
+  # TASK 3 : To perform debugging of the main section of the previous program i.e. sum1ton.c and observe the values of register after each step of compilation.
+
+  The assembly level of main section of the program sum1ton.c is shown below in the snapshot for reference.
+
+  ![image](https://github.com/user-attachments/assets/57ba7087-8af4-4a01-a03e-e1d8070c62ba)
+
+  ### Step 1 : First compile the code with Spike simulator. Then compare and verify the result from both the compilation techniques by giving the following code : 
+
+  ```
+spike pk sum1ton.o
+```
+![image](https://github.com/user-attachments/assets/3d9e14f9-ed05-4e2e-b4fc-067cbf7d0a9c)
+
+OBSERVATION : The result from both the compilation techniques is same.
+
+### Step 2 : Execute the sum1ton.o (i.e. object file) in the spike simulator in order to debug the code, by giving the following code :
+
+```
+spike -d pk sum1ton.o
+```
+![image](https://github.com/user-attachments/assets/34336a9b-3fd5-4975-b11d-e422696b8e3e)
+
+ OBSERVATION : The debugging mode has been opened.
+
+ ### Step 3 : Bring the pgrogram counter (pc) at the start of main by givving the following code: 
+ ```
+until pc 0 100b0
+```
+NOTE : 0x100b0 is the address of the start of the main function.
+
+![image](https://github.com/user-attachments/assets/087c4b11-bb6d-4e26-b07b-e03910de6c68)
+
+### Step 4 : Execute the following commands in order to check the contents of registor 'a2' before and after of running the instruction:
+
+```
+reg 0 a2
+```
+Press Enter
+
+```
+reg 0 a2
+```
+Press Enter
+
+```
+reg 0 a0
+```
+Press Enter
+
+![image](https://github.com/user-attachments/assets/f24262ab-9aa5-496b-b2ff-90e9d4cc099d)
+
+
+
+OBSERVATION : a2 and a0 registor is loaded by the given value and the addition took place.
+
+### Step 5 : Verification of the addition.
+
+Bring the program counter(pc) to address 0x100b8 where the addition will take place.
+
+![image](https://github.com/user-attachments/assets/5afe0f90-8dfa-4744-a3be-543fa1d0809d)
+
+Enter the following instruction : 
+```
+reg 0 sp
+```
+Press ENTER
+```
+reg 0 sp
+```
+
+In the image shown below it is evident that the addition of (-16) took place and the value 10 ( 16 in decimal base and 10 in hexadecimal base ) has been deducted.
+
+![image](https://github.com/user-attachments/assets/fdcc8a14-c367-4919-ba6c-8188eda6e9b6)
+
+## Conclusion : The debugging process has been done and the process of addition has also been seen.
+
+
+
+
+
+
+
+
+
+
+
 
 
  
