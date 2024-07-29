@@ -1,7 +1,7 @@
 
-# TASK 1 : 
+# TASK 1 
 ( 16/07/2024 )
-## Create a simple C program and compile it using GCC followed by verification of the program output. 
+## AIM : Create a simple C program and compile it using GCC followed by verification of the program output. 
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
@@ -51,9 +51,9 @@ Press `ENTER`
  ### Conclusion : In the above snapshot it is verified the program is compiled successfully and the result is also correct, that is 15 (1+2+3+4+5 = 15).
 
 
- # TASK 2 : 
+ # TASK 2  
  ( 16/07/2024 )
- ## Compiling and executing a C program using RISC - V compiler and optimize the compilation using O1 and Ofast.
+ ## AIM : Compiling and executing a C program using RISC - V compiler and optimize the compilation using O1 and Ofast.
 
  ### Step 1 : Write a simple C program in the text editor (leafpad) and save it. You can see contents of the C program below.
 
@@ -108,9 +108,9 @@ Press `ENTER`
   ## Conclusion : The compilation in the later procedure is optimised.
 
 
-  # TASK 3 : 
+  # TASK 3  
   ( 19/07/2024 )
-  ## To perform debugging of the main section of the previous program i.e. sum1ton.c and observe the values of register after each step of compilation.
+  ## AIM : To perform debugging of the main section of the previous program i.e. sum1ton.c and observe the values of register after each step of compilation.
 
   The assembly level of main section of the program sum1ton.c is shown below in the snapshot for reference.
 
@@ -186,9 +186,9 @@ In the image shown below it is evident that the addition of (-16) took place and
 
 ## Conclusion : The debugging process has been done and the process of addition has also been seen.
 
-# TASK 4 : 
+# TASK 4  
 ( 22/07/2024 )
-## Identify various RISC-V instruction type (R, I, S, B, U, J) and exact 32-bit instruction code in the instruction type format for the given RISC-V instructions.
+## AIM : Identify various RISC-V instruction type (R, I, S, B, U, J) and exact 32-bit instruction code in the instruction type format for the given RISC-V instructions.
 
 ### Various format types of RISC-V instruction are:
 - R-format
@@ -283,6 +283,169 @@ Used for jump instructions.
 | 13.    | SLL r05, r01, r1     | R                  | 0000000 00001 00001 001 00101 0110011  |        0x001092B3         |
 
 ## Conclusion : The instruction format type has been idendified for the given instruction and its 32 bit instruction code has also been found.
+
+# TASK 5  
+( 22/07/2024 )
+
+## AIM : To execute in instructed assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.
+
+There is some variations in the ISA followed by RISCV and the hardcoded ISA for the below given instrucions. The differences are shown in the table below : 
+
+|Assembly Instruction	      | Standard  RISCV  ISA	 | Hardcoded  ISA  |
+|----------------|-------------------|--------------|
+|ADD R4, R4, R4	 |32'h00420233       |32'h02208300  |
+|SUB R4, R4, R4	 |32'h40420233       |32'h02209380  |
+|AND R4, R4, R4	 |32'h00427233       |32'h0230a400  |
+|OR R8, R4, R5	  |32'h00526433	      |32'h02513480  |
+|XOR R8, R4, R4  |32'h00C323B3       |32'h0240c500  |
+|SLT R00, R1, R4 |32'h00424433	      |32'h02415580  |
+|ADDI R02, R2, 5 |32'h00510113	      |32'h00520600  |
+|SW R2, R0, 4	 	 |32'h00012223	      |32'h00209181  |
+|SRL R06, R01, R1|32'h0010D333	      |32'h00208681  |
+|BNE R0, R0, 20  |32'h00801063	      |32'h00f00002  |
+|BEQ R0, R0, 15  |32'h00F00063       |32'h00210700  |
+|LW R03, R01, 2	 |32'h0020A183 	     |32'h01409002  |
+|SLL R05, R01, R1|32'h001092B3 	     |32'h00520601  |
+
+### Note : Since in the program there is Hardcoded ISA which is different from Standard RISC-V ISA, so the resultant waveform has some variation.
+
+So now lets check out the waveform of the given instructions.
+
+- 1. ` ADD R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![1](https://github.com/user-attachments/assets/50c4e52a-2530-4578-9e99-4501a0d672a1)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![1 1](https://github.com/user-attachments/assets/34c51a07-5f64-4a89-9c09-a43ccd5c7418)
+
+- 2. ` SUB R4, R4, R4 `
+      The waveform for the above command using the provided verilog code is given below :
+
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![7](https://github.com/user-attachments/assets/8f479709-ee1b-4c93-a924-ba06b81b7511)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![7 1](https://github.com/user-attachments/assets/b9c46699-f072-44f0-88a1-e705de90a3fd)
+
+- 8. ` SW R2, R0, 4	`
+     
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![8](https://github.com/user-attachments/assets/a4ea040a-b73c-4974-95f0-7e9703a188a5)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![8 1](https://github.com/user-attachments/assets/6313d281-6508-47be-8310-2fabb739d812)
+
+- 9. ` SRL R06, R01, R1 `
+
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![9](https://github.com/user-attachments/assets/133a376d-feef-41fa-b52f-ba047de1c5c5)
+
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![9 1](https://github.com/user-attachments/assets/7d5a77d6-8bd2-4ddc-ac9f-8f3b8294678b)
+
+- 10. ` BNE R0, R0, 20 `
+
+      The waveform for the above command using the provided verilog code is given below :
+
+      ![10](https://github.com/user-attachments/assets/4babc4cd-33c3-4ca0-af85-7157c391ef93)
+
+
+      The waveform for the hardcoded command present in the code is given below :
+
+      ![10 1](https://github.com/user-attachments/assets/72791b08-a701-4295-8e63-aa891d5da6fa)
+
+ - 11. ` BEQ R0, R0, 15  `
+
+       The waveform for the above command using the provided verilog code is given below :
+
+       ![11](https://github.com/user-attachments/assets/1279cb15-3891-44f6-bd62-dd6e8693c7ef)
+
+
+       The waveform for the hardcoded command present in the code is given below :
+
+       ![11 1](https://github.com/user-attachments/assets/2a6bc698-6a99-4165-83e6-bd3575c07ddc)
+
+- 12. ` LW R03, R01, 2 `
+
+      The waveform for the above command using the provided verilog code is given below :
+
+      ![12](https://github.com/user-attachments/assets/8b86050b-b375-4bc9-9523-ad4b69365b33)
+
+- 13. ` SLL R05, R01, R1 `
+
+      The above command was not able to be executed as there was not enough memory spaces and the program was compiled with a warning ( as shown in the snapshot shown below ) :
+
+      ![last](https://github.com/user-attachments/assets/f2ac6cfc-ad31-4562-bd1c-5afd5c8178aa)
+
+  ## Conclusion : The given instruction was executed and the waveform difference was observed.
+  
+
+  
+
+
+
+     
+
+
+
+
+
+
+
+
 
 
 
