@@ -1,4 +1,11 @@
-
+# Table of Contents 
+- 1 . [TASK 1 : Create a simple C program and compile it using GCC.](#task-1)
+- 2 . [TASK 2 : Compiling a C program using RISC-V compiler and optimize the compilation using O1 and Ofast.](#task-2)
+- 3 . [TASK 3 : Perform debugging of the main section of the program and observe the values of register after each step of compilation.](#task-3)
+- 4 . [TASK 4 : Identify various RISC-V instruction type (R, I, S, B, U, J)](#task-4)
+- 5 . [TASK 5 : Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
+      
+  
 # TASK 1 
 ( 16/07/2024 )
 ## AIM : Create a simple C program and compile it using GCC followed by verification of the program output. 
@@ -287,7 +294,7 @@ Used for jump instructions.
 # TASK 5  
 ( 22/07/2024 )
 
-## AIM : To execute in instructed assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.
+## AIM : To execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.
 
 There is some variations in the ISA followed by RISCV and the hardcoded ISA for the below given instrucions. The differences are shown in the table below : 
 
