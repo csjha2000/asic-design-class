@@ -8,7 +8,7 @@
   
 # TASK 1 
 ( 16/07/2024 )
-## AIM : Create a simple C program and compile it using GCC followed by verification of the program output. 
+## AIM : To Create a simple C program and compile it using GCC followed by verification of the program output. 
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
@@ -60,7 +60,7 @@ Press `ENTER`
 
  # TASK 2  
  ( 16/07/2024 )
- ## AIM : Compiling and executing a C program using RISC - V compiler and optimize the compilation using O1 and Ofast.
+ ## AIM : To Compiling and executing a C program using RISC - V compiler and optimize the compilation using O1 and Ofast.
 
  ### Step 1 : Write a simple C program in the text editor (leafpad) and save it. You can see contents of the C program below.
 
@@ -195,7 +195,7 @@ In the image shown below it is evident that the addition of (-16) took place and
 
 # TASK 4  
 ( 22/07/2024 )
-## AIM : Identify various RISC-V instruction type (R, I, S, B, U, J) and exact 32-bit instruction code in the instruction type format for the given RISC-V instructions.
+## AIM : To Identify various RISC-V instruction type (R, I, S, B, U, J) and exact 32-bit instruction code in the instruction type format for the given RISC-V instructions.
 
 ### Various format types of RISC-V instruction are:
 - R-format
