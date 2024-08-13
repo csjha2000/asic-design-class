@@ -4,6 +4,7 @@
 - 3 . [TASK 3 : Perform debugging of the main section of the program and observe the values of register after each step of compilation.](#task-3)
 - 4 . [TASK 4 : Identify various RISC-V instruction type (R, I, S, B, U, J)](#task-4)
 - 5 . [TASK 5 : Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
+- 6 . [TASK 6 : Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
       
   
 # TASK 1 
@@ -438,7 +439,92 @@ So now lets check out the waveform of the given instructions.
       ![last](https://github.com/user-attachments/assets/f2ac6cfc-ad31-4562-bd1c-5afd5c8178aa)
 
   ## Conclusion : The given instruction was executed and the waveform difference was observed.
-  
+
+
+  # TASK 6  
+( 13/08/2024 )
+
+## AIM : To write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.
+### APPLICATION : SIP CALCULATOR
+
+INTRODUCTION : A Systematic Investment Plan (SIP) calculator in C can help you determine the future value of investments based on regular contributions and a specified rate of return. Below is a simple C program to calculate the future value of an SIP investment.
+
+### Step 1 : Open the text editor and write the program in 'C' that calculates SIP for the given inputs. Save the file with extention '.c'. the snapshot of the code is given below.
+
+```
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    double principal, annual_rate, amount, interest;
+    int times_compounded, years;
+
+    // Get user input
+    printf("Enter the principal amount: $");
+    scanf("%lf", &principal);
+
+    printf("Enter the annual interest rate (in percentage): ");
+    scanf("%lf", &annual_rate);
+
+    printf("Enter the number of times interest is compounded per year: ");
+    scanf("%d", &times_compounded);
+
+    printf("Enter the number of years the money is invested or borrowed for: ");
+    scanf("%d", &years);
+
+    // Convert annual interest rate from percentage to decimal
+    annual_rate = annual_rate / 100.0;
+
+    // Calculate the compound amount
+    amount = principal * pow((1 + annual_rate / times_compounded), times_compounded * years);
+
+    // Calculate compound interest
+    interest = amount - principal;
+
+    // Display the results
+    printf("Compound Interest: $%.2f\n", interest);
+    printf("Total Amount after %.2d years: $%.2f\n", years, amount);
+
+    return 0;
+}
+```
+ ![image](https://github.com/user-attachments/assets/b5736332-bbba-446c-b2b5-ae39a10e5234)
+
+ ### Step 2 : Compile it using GCC by giving the following series of command.
+
+ ```
+gcc sip_cal.c
+```
+Press ` ENTER `
+```
+./a.out
+```
+Press ` ENTER `
+
+Enter the Inputs and then verify the output.
+
+ ![image](https://github.com/user-attachments/assets/074d7dd9-d83b-4c87-945a-a13b50c3d9a3)
+
+### Step 3 : Compile it using RISC-V GCC and verify the output using SPIKE by giving the following series of command.
+```
+riscv64-unknown-elf-gcc -o sip_cal sip_cal.c -lm
+```
+Press ` ENTER `
+```
+spike pk sip_cal
+```
+Press ` ENTER `
+
+Enter the Inputs and then verify the Output.
+
+
+![image](https://github.com/user-attachments/assets/c9d5f03f-c0ed-4e08-a6d1-b19321325c6f)
+
+
+ ### OBSERVATION : The output from both the compilation techniques results to same value for similar inputs given.
+
+ ## CONCLUSION : The above application program has been compiled using GCC and RISC-V GCC which gave same output for the given set of inputs, thereby proving **O0=O1**.
+
 
   
 
