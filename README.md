@@ -441,7 +441,7 @@ So now lets check out the waveform of the given instructions.
   ## Conclusion : The given instruction was executed and the waveform difference was observed.
 
 
-  # TASK 6  
+# TASK 6  
 ( 13/08/2024 )
 
 ## AIM : To write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.
