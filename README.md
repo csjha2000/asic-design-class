@@ -1,10 +1,10 @@
 # Table of Contents 
-- 1 . [TASK 1 : Create a simple C program and compile it using GCC.](#task-1)
-- 2 . [TASK 2 : Compiling a C program using RISC-V compiler and optimize the compilation using O1 and Ofast.](#task-2)
-- 3 . [TASK 3 : Perform debugging of the main section of the program and observe the values of register after each step of compilation.](#task-3)
-- 4 . [TASK 4 : Identify various RISC-V instruction type (R, I, S, B, U, J)](#task-4)
-- 5 . [TASK 5 : Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
-- 6 . [TASK 6 : Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
+- **TASK 1:** (16/07/24) [Create a simple C program and compile it using GCC.](#task-1)
+- **TASK 2:** (16/07/24) [Compiling a C program using RISC-V compiler and optimize the compilation using O1 and Ofast.](#task-2)
+- **TASK 3:** (19/07/24) [Perform debugging of the main section of the program and observe the values of register after each step of compilation.](#task-3)
+- **TASK 4:** (22/07/24) [Identify various RISC-V instruction type (R, I, S, B, U, J)](#task-4)
+- **TASK 5:** (22/07/24) [Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
+- **TASK 6:** (13/08/24) [Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
       
   
 # TASK 1 
