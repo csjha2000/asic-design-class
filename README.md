@@ -507,7 +507,7 @@ Enter the Inputs and then verify the output.
 
 ### Step 3 : Compile it using RISC-V GCC and verify the output using SPIKE by giving the following series of command.
 ```
-riscv64-unknown-elf-gcc -o sip_cal sip_cal.c -lm
+riscv64-unknown-elf-gcc -O1 -o sip_cal sip_cal.c -lm
 ```
 Press ` ENTER `
 ```
@@ -518,12 +518,13 @@ Press ` ENTER `
 Enter the Inputs and then verify the Output.
 
 
-![image](https://github.com/user-attachments/assets/c9d5f03f-c0ed-4e08-a6d1-b19321325c6f)
+![image](https://github.com/user-attachments/assets/f2dc6e8c-91ab-4107-b5fd-b76b9e330c0d)
+
 
 
  ### OBSERVATION : The output from both the compilation techniques results to same value for similar inputs given.
 
- ## CONCLUSION : The above application program has been compiled using GCC and RISC-V GCC which gave same output for the given set of inputs, thereby proving **O0=O1**.
+ ## CONCLUSION : The above application program has been compiled using GCC and RISC-V GCC which gave same output for the given set of inputs, thereby proving ' __O0=O1__'.
 
 
   
