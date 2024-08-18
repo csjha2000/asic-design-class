@@ -5,11 +5,14 @@
 - **TASK 4:** (22/07/24) [Identify various RISC-V instruction type (R, I, S, B, U, J)](#task-4)
 - **TASK 5:** (22/07/24) [Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
 - **TASK 6:** (13/08/24) [Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
+- **TASK 7:** (15/08/24) [Building a 5-stage pipeplined RISC-V processor.](#task-7)
       
   
-# TASK 1 
+
+# TASK 1      
 ( 16/07/2024 )
-## AIM : To Create a simple C program and compile it using GCC followed by verification of the program output. 
+
+## AIM : To Create a simple C program and compile it using GCC followed by verification of the program output. </summary>
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
@@ -526,12 +529,130 @@ Enter the Inputs and then verify the Output.
 
  ## CONCLUSION : The above application program has been compiled using GCC and RISC-V GCC which gave same output for the given set of inputs, thereby proving ' __O0=O1__'.
 
+# TASK 7  
+( 15/08/2024 )
 
+<details>
+      <summary> Digital Logic with TL Verilog and Makerchip. </summary>
+
+#  Combinational Logic 
+## Implementing a CALCULATOR based on Combinational Logic.
+
+Code snippet is given below:
+( Insert this snippet under the TLV section in Makerchip IDE )
+```
+   $reset = *reset;
+
+   $clk_CHA = *clk;
+
+   //define smaller random numbers 4bit and assign to val1/val2
+   // 31-4 bits of val1/val2 will be zero and 0-9 bits will be rand1/rand2 values
+   
+   $val1[31:0] = $rand1[3:0];
+   $val2[31:0] = $rand2[3:0];
+   $op[1:0] = $rand3[1:0];
+   $sum[31:0] = $val1[31:0] + $val2[31:0];
+   $diff[31:0] = $val1[31:0] - $val2[31:0];
+   $prod[31:0] = $val1[31:0] * $val2[31:0];
+   $quot[31:0] = $val1[31:0] / $val2[31:0];
+   $out[31:0] =
+         ($op == 0)
+           ? $sum[31:0] :
+         ($op == 1)
+           ? $diff[31:0] :
+         ($op == 2)
+           ? $prod[31:0] :
+         ($op == 3)
+           ? $quot[31:0] :
+         //default
+           32'b0;
+
+   // Assert these to end simulation (before Makerchip cycle limit).
+   *passed = *cyc_cnt > 40;
+   *failed = 1'b0;
+```
+The snapshot of the implementation of the above code for combinational circuit in Makerchip platfrom is shown below.
+
+We can also observe the generated block diagram as well as the waveform for the simulation of our circuit.
+
+![Combinational calculator](https://github.com/user-attachments/assets/7b66913c-3495-46df-bcab-cbb965182997)
+
+
+#  Sequential Logic 
+## Implementing a CALCULATOR based on Sequential Logic.
+
+Code snippet is given below:
+( Insert this snippet under the TLV section in Makerchip IDE )
+
+```
+   |calc
+      @0
+         $reset = *reset;
+         
+         $clk_CHA = *clk;
+         
+         $val1[31:0] = >>1$out[31:0];
+         $val2[31:0] = $rand2[3:0];
+         $op[1:0] = $rand3[1:0];
+   
+         $sum[31:0] = $val1[31:0] + $val2[31:0];
+         $diff[31:0] = $val1[31:0] - $val2[31:0];
+         $prod[31:0] = $val1[31:0] * $val2[31:0];
+         $quot[31:0] = $val1[31:0] / $val2[31:0];
+      
+         $out[31:0] = $reset ? 32'b0 : (($op[1:0]==2'b00) ? $sum :
+                                       ($op[1:0]==2'b01) ? $diff :
+                                       ($op[1:0]==2'b10) ? $prod : $quot);
+                         
+   // Assert these to end simulation (before Makerchip cycle limit).
+   *passed = *cyc_cnt > 40;
+   *failed = 1'b0;
+```
+
+The snapshot of the implementation of the above code for sequential circuit in Makerchip platfrom is shown below.
+
+We can also observe the generated block diagram as well as the waveform for the simulation of our circuit.
+
+![image](https://github.com/user-attachments/assets/7d3d8c8b-65bd-42bc-a18d-a9d9fbb11839)
+
+#  Pipelined Logic 
+## Implementing a Error Detector based on Pipelined Logic.
+
+Code snippet is given below:
+( Insert this snippet under the TLV section in Makerchip IDE )
+
+```
+   $reset = *reset;
+   
+   $clk_CHA = *reset;
+   
+   |comp
+      ?$valid
+         @1
+            $err1 = $bad_input | $illegal_op;
+         @3
+            $err2 = $err1 | $over_flow;
+         @6
+            $err3 = $err2 | $div_by_zero;
+
+   // Assert these to end simulation (before Makerchip cycle limit).
+   *passed = *cyc_cnt > 40;
+   *failed = 1'b0;
+```
+
+The snapshot of the implementation of the above code for pipeline logic in Makerchip platfrom is shown below.
+
+We can also observe the generated block diagram for the simulation of our circuit.
+
+![image](https://github.com/user-attachments/assets/90c30806-8a88-47bb-9100-e82f9f930f53)
+
+</details>
   
+<details>
+      <summary> Basic RISC-V CPU Micro-architechture . </summary>
 
 
-
-     
+</details>
 
 
 
