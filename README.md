@@ -6,6 +6,7 @@
 - **TASK 5:** [Execute assembly instructions using a given verilog code for a riscV processor and compare the waveform with Hardcoded instructions.](#task-5)
 - **TASK 6:** [Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
 - **TASK 7:** [Building a 5-stage pipelined RISC-V processor.](#task-7)
+- **TASK 8:** [RISC-V Pre synthesis simulation using IVerilog and GTKWave.](#task-8)
       
   
 
@@ -894,26 +895,26 @@ $valid = $reset ? 1'b0 : ($start) ? 1'b1 : (>>3$valid) ;
 ```
 \m4_TLV_version 1d: tl-x.org
 \SV
-   // Template code can be found in: https://github.com/stevehoover/RISC-V_MYTH_Workshop
+   m4_include_lib(['https://raw.githubusercontent.com/shivanishah269/risc-v-core/master/FPGA_Implementation/riscv_shell_lib.tlv'])
    
-   m4_include_lib(['https://raw.githubusercontent.com/BalaDhinesh/RISC-V_MYTH_Workshop/master/tlv_lib/risc-v_shell_lib.tlv'])
-
-\SV
-   m4_makerchip_module   // (Expanded in Nav-TLV pane.)
+   // Module interface, either for Makerchip, or not.
+   m4_ifelse_block(M4_MAKERCHIP, 1, ['
+   // Makerchip module interface.
+   m4_makerchip_module
+   wire CLK = clk;
+   logic [9:0] OUT;
+   assign passed = cyc_cnt > 300;
+   '], ['
+   // Custom module interface for BabySoC.
+   module rvmyth(
+      output reg [9:0] OUT,
+      input CLK,
+      input reset
+   );
+   wire clk = CLK;
+   '])
+   
 \TLV
-
-   // /====================\
-   // | Sum 0 to 9 Program |
-   // \====================/
-   //
-   // Add 0,1,2,3,...,9 (in that order).
-   //
-   // Regs:
-   //  r10 (a0): In: 0, Out: final sum
-   //  r12 (a2): 10
-   //  r13 (a3): 1..10
-   //  r14 (a4): Sum
-   // 
    // External to function:
    m4_asm(ADD, r10, r0, r0)             // Initialize r10 (a0) to 0.
    // Function:
@@ -925,238 +926,214 @@ $valid = $reset ? 1'b0 : ($start) ? 1'b1 : (>>3$valid) ;
    m4_asm(ADDI, r13, r13, 1)            // Increment intermediate register by 1
    m4_asm(BLT, r13, r12, 1111111111000) // If a3 is less than a2, branch to label named <loop>
    m4_asm(ADD, r10, r14, r0)            // Store final result to register a0 so that it can be read by main program
-   m4_asm(SW, r0, r10, 10000)           // Store r10 result in dmem
-   m4_asm(LW, r17, r0, 10000)           // Load contents of dmem to r17
-   m4_asm(JAL, r7, 00000000000000000000) // Done. Jump to itself (infinite loop). (Up to 20-bit signed immediate plus implicit 0 bit (unlike JALR) provides byte address; last immediate bit should also be 0)
+   m4_asm(SW, r0, r10, 10000)           // Store the final result value to byte address 16
+   m4_asm(LW, r17, r0, 10000)           // Load the final result value from adress 16 to x17
+   //
    m4_define_hier(['M4_IMEM'], M4_NUM_INSTRS)
-
+   //
    |cpu
       @0
          $reset = *reset;
          $clk_CHA = *clk;
+         `BOGUS_USE($clk_CHA)
+      //Fetch
+         // Next PC
+         $pc[31:0] = (>>1$reset) ? 32'd0 : 
+                     (>>3$valid_taken_br) ? >>3$br_tgt_pc : 
+                     (>>3$valid_load) ? >>3$inc_pc : 
+                     (>>3$valid_jump && >>3$is_jal) ? >>3$br_tgt_pc :
+                     (>>3$valid_jump && >>3$is_jalr) ? >>3$jalr_tgt_pc : >>1$inc_pc;
          
-         //PC fetch - branch, jumps and loads introduce 2 cycle bubbles in this pipeline
-         $pc[31:0] = >>1$reset ? '0 : (>>3$valid_taken_br ? >>3$br_tgt_pc :
-                                       >>3$valid_load     ? >>3$inc_pc[31:0] :
-                                       >>3$jal_valid      ? >>3$br_tgt_pc :
-                                       >>3$jalr_valid     ? >>3$jalr_tgt_pc :
-                                                     (>>1$inc_pc[31:0]));
-         // Access instruction memory using PC
-         $imem_rd_en = ~ $reset;
-         $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
+         $imem_rd_en = !$reset;
+         $imem_rd_addr[31:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
          
-         
-      @1
-         //Getting instruction from IMem
+      @1         
          $instr[31:0] = $imem_rd_data[31:0];
-         
-         //Increment PC
-         $inc_pc[31:0] = $pc[31:0] + 32'h4;
-         
-         //Decoding I,R,S,U,B,J type of instructions based on opcode [6:0]
-         //Only [6:2] is used here because this implementation is for RV64I which does not use [1:0]
-         $is_i_instr = $instr[6:2] ==? 5'b0000x ||
-                       $instr[6:2] ==? 5'b001x0 ||
+         $inc_pc[31:0] = $pc + 32'd4;          
+      // Decode   
+         $is_i_instr = $instr[6:2] == 5'b00000 ||
+                       $instr[6:2] == 5'b00001 ||
+                       $instr[6:2] == 5'b00100 ||
+                       $instr[6:2] == 5'b00110 ||
                        $instr[6:2] == 5'b11001;
-         
          $is_r_instr = $instr[6:2] == 5'b01011 ||
-                       $instr[6:2] ==? 5'b011x0 ||
-                       $instr[6:2] == 5'b10100;
-         
-         $is_s_instr = $instr[6:2] ==? 5'b0100x;
-         
-         $is_u_instr = $instr[6:2] ==? 5'b0x101;
-         
+                       $instr[6:2] == 5'b10100 ||
+                       $instr[6:2] == 5'b01100 ||
+                       $instr[6:2] == 5'b01101;                       
          $is_b_instr = $instr[6:2] == 5'b11000;
-         
+         $is_u_instr = $instr[6:2] == 5'b00101 ||
+                       $instr[6:2] == 5'b01101;
+         $is_s_instr = $instr[6:2] == 5'b01000 ||
+                       $instr[6:2] == 5'b01001;
          $is_j_instr = $instr[6:2] == 5'b11011;
          
-         //Immediate value decode
-         $imm[31:0] = $is_i_instr ? { {21{$instr[31]}} , $instr[30:20]} :
-                      $is_s_instr ? { {21{$instr[31]}} , $instr[30:25] , $instr[11:8] , $instr[7]} :
+         $imm[31:0] = $is_i_instr ? { {21{$instr[31]}} , $instr[30:20] } :
+                      $is_s_instr ? { {21{$instr[31]}} , $instr[30:25] , $instr[11:8] , $instr[7] } :
                       $is_b_instr ? { {20{$instr[31]}} , $instr[7] , $instr[30:25] , $instr[11:8] , 1'b0} :
-                      $is_u_instr ? { $instr[31] , $instr[30:12] , { 12{1'b0}} } :
-                      $is_j_instr ? { {12{$instr[31]}} , $instr[19:12] , $instr[20] , $instr[30:21] , 1'b0} :
-                      >>1$imm[31:0];
+                      $is_u_instr ? { $instr[31:12] , 12'b0} : 
+                      $is_j_instr ? { {12{$instr[31]}} , $instr[19:12] , $instr[20] , $instr[30:21] , 1'b0} : 32'b0;
          
-         //Generate valid signals for each instruction fields
-         $rs1_or_funct3_valid    = $is_r_instr || $is_i_instr || $is_s_instr || $is_b_instr;
-         $rs2_valid              = $is_r_instr || $is_s_instr || $is_b_instr;
-         $rd_valid               = $is_r_instr || $is_i_instr || $is_u_instr || $is_j_instr;
-         $funct7_valid           = $is_r_instr;
-         
-         //Decode other fields of instruction - source and destination registers, funct, opcode
-         ?$rs1_or_funct3_valid
-            $rs1[4:0]    = $instr[19:15];
-            $funct3[2:0] = $instr[14:12];
+         $rs2_valid = $is_r_instr || $is_s_instr || $is_b_instr;
+         $rs1_valid = $is_r_instr || $is_s_instr || $is_b_instr || $is_i_instr;
+         $rd_valid = $is_r_instr || $is_i_instr || $is_u_instr || $is_j_instr;
+         $funct3_valid = $is_r_instr || $is_s_instr || $is_b_instr || $is_i_instr;
+         $funct7_valid = $is_r_instr;
          
          ?$rs2_valid
-            $rs2[4:0]    = $instr[24:20];
-         
+            $rs2[4:0] = $instr[24:20];
+         ?$rs1_valid
+            $rs1[4:0] = $instr[19:15];
          ?$rd_valid
-            $rd[4:0]     = $instr[11:7];
-         
+            $rd[4:0] = $instr[11:7];
+         ?$funct3_valid
+            $funct3[2:0] = $instr[14:12];
          ?$funct7_valid
             $funct7[6:0] = $instr[31:25];
-         
+            
          $opcode[6:0] = $instr[6:0];
          
-         //Decode instruction in subset of base instruction set based on RISC-V 32I
          $dec_bits[10:0] = {$funct7[5],$funct3,$opcode};
          
-         //Branch instructions
-         $is_beq   = $dec_bits ==? 11'bx_000_1100011;
-         $is_bne   = $dec_bits ==? 11'bx_001_1100011;
-         $is_blt   = $dec_bits ==? 11'bx_100_1100011;
-         $is_bge   = $dec_bits ==? 11'bx_101_1100011;
-         $is_bltu  = $dec_bits ==? 11'bx_110_1100011;
-         $is_bgeu  = $dec_bits ==? 11'bx_111_1100011;
+         // Branch Instruction
+         $is_beq = $dec_bits[9:0] == 10'b000_1100011;
+         $is_bne = $dec_bits[9:0] == 10'b001_1100011;
+         $is_blt = $dec_bits[9:0] == 10'b100_1100011;
+         $is_bge = $dec_bits[9:0] == 10'b101_1100011;
+         $is_bltu = $dec_bits[9:0] == 10'b110_1100011;
+         $is_bgeu = $dec_bits[9:0] == 10'b111_1100011;
          
-         //Jump instructions
-         $is_auipc = $dec_bits ==? 11'bx_xxx_0010111;
-         $is_jal   = $dec_bits ==? 11'bx_xxx_1101111;
-         $is_jalr  = $dec_bits ==? 11'bx_000_1100111;
+         // Arithmetic Instruction
+         $is_add = $dec_bits == 11'b0_000_0110011;
+         $is_addi = $dec_bits[9:0] == 10'b000_0010011;
+         $is_or = $dec_bits == 11'b0_110_0110011;
+         $is_ori = $dec_bits[9:0] == 10'b110_0010011;
+         $is_xor = $dec_bits == 11'b0_100_0110011;
+         $is_xori = $dec_bits[9:0] == 10'b100_0010011;
+         $is_and = $dec_bits == 11'b0_111_0110011;
+         $is_andi = $dec_bits[9:0] == 10'b111_0010011;
+         $is_sub = $dec_bits == 11'b1_000_0110011;
+         $is_slti = $dec_bits[9:0] == 10'b010_0010011;
+         $is_sltiu = $dec_bits[9:0] == 10'b011_0010011;
+         $is_slli = $dec_bits == 11'b0_001_0010011;
+         $is_srli = $dec_bits == 11'b0_101_0010011;
+         $is_srai = $dec_bits == 11'b1_101_0010011;
+         $is_sll = $dec_bits == 11'b0_001_0110011;
+         $is_slt = $dec_bits == 11'b0_010_0110011;
+         $is_sltu = $dec_bits == 11'b0_011_0110011;
+         $is_srl = $dec_bits == 11'b0_101_0110011;
+         $is_sra = $dec_bits == 11'b1_101_0110011;
          
-         //Arithmetic instructions
-         $is_addi  = $dec_bits ==? 11'bx_000_0010011;
-         $is_add   = $dec_bits ==  11'b0_000_0110011;
-         $is_lui   = $dec_bits ==? 11'bx_xxx_0110111;
-         $is_slti  = $dec_bits ==? 11'bx_010_0010011;
-         $is_sltiu = $dec_bits ==? 11'bx_011_0010011;
-         $is_xori  = $dec_bits ==? 11'bx_100_0010011;
-         $is_ori   = $dec_bits ==? 11'bx_110_0010011;
-         $is_andi  = $dec_bits ==? 11'bx_111_0010011;
-         $is_slli  = $dec_bits ==? 11'b0_001_0010011;
-         $is_srli  = $dec_bits ==? 11'b0_101_0010011;
-         $is_srai  = $dec_bits ==? 11'b1_101_0010011;
-         $is_sub   = $dec_bits ==? 11'b1_000_0110011;
-         $is_sll   = $dec_bits ==? 11'b0_001_0110011;
-         $is_slt   = $dec_bits ==? 11'b0_010_0110011;
-         $is_sltu  = $dec_bits ==? 11'b0_011_0110011;
-         $is_xor   = $dec_bits ==? 11'b0_100_0110011;
-         $is_srl   = $dec_bits ==? 11'b0_101_0110011;
-         $is_sra   = $dec_bits ==? 11'b1_101_0110011;
-         $is_or    = $dec_bits ==? 11'b0_110_0110011;
-         $is_and   = $dec_bits ==? 11'b0_111_0110011;
+         // Load Instruction
+         $is_load = $dec_bits[6:0] == 7'b0000011;
          
-         //Store instructions
-         $is_sb    = $dec_bits ==? 11'bx_000_0100011;
-         $is_sh    = $dec_bits ==? 11'bx_001_0100011;
-         $is_sw    = $dec_bits ==? 11'bx_010_0100011;
+         // Store Instruction
+         $is_sb = $dec_bits[9:0] == 10'b000_0100011;
+         $is_sh = $dec_bits[9:0] == 10'b001_0100011;
+         $is_sw = $dec_bits[9:0] == 10'b010_0100011;
          
-         //Load instructions - support only 4 byte load
-         $is_load  = $dec_bits ==? 11'bx_xxx_0000011;
+         // Jump Instruction
+         $is_lui = $dec_bits[6:0] == 7'b0110111;
+         $is_auipc = $dec_bits[6:0] == 7'b0010111;
+         $is_jal = $dec_bits[6:0] == 7'b1101111;
+         $is_jalr = $dec_bits[9:0] == 10'b000_1100111;
          
          $is_jump = $is_jal || $is_jalr;
          
-      @2
-         //Get Source register values from reg file
-         $rf_rd_en1 = $rs1_or_funct3_valid;
+      @2   
+      // Register File Read
+         $rf_rd_en1 = $rs1_valid;
+         ?$rf_rd_en1
+            $rf_rd_index1[4:0] = $rs1[4:0];
+         
          $rf_rd_en2 = $rs2_valid;
+         ?$rf_rd_en2
+            $rf_rd_index2[4:0] = $rs2[4:0];
+            
+      // Branch Target PC       
+         $br_tgt_pc[31:0] = $pc + $imm;
+      
+      // Jump Target PC
+         $jalr_tgt_pc[31:0] = $src1_value + $imm;
          
-         $rf_rd_index1[4:0] = $rs1[4:0];
-         $rf_rd_index2[4:0] = $rs2[4:0];
+      // Input signals to ALU
+         $src1_value[31:0] = ((>>1$rd == $rs1) && >>1$rf_wr_en) ? >>1$result : $rf_rd_data1[31:0];
+         $src2_value[31:0] = ((>>1$rd == $rs2) && >>1$rf_wr_en) ? >>1$result : $rf_rd_data2[31:0];
          
-         //Register file bypass logic - data forwarding from ALU to resolve RAW dependence
-         $src1_value[31:0] = $rs1_bypass ? >>1$result[31:0] : $rf_rd_data1[31:0];
-         $src2_value[31:0] = $rs2_bypass ? >>1$result[31:0] : $rf_rd_data2[31:0];
+      @3   
          
-         //Branch target PC computation for branches and JAL
-         $br_tgt_pc[31:0] = $imm[31:0] + $pc[31:0];
+      // ALU
+         $sltu_result = $src1_value < $src2_value ;
+         $sltiu_result = $src1_value < $imm ;
          
-         //RAW dependence check for ALU data forwarding
-         //If previous instruction was writing to reg file, and current instruction is reading from same register
-         $rs1_bypass = >>1$rf_wr_en && (>>1$rd == $rs1);
-         $rs2_bypass = >>1$rf_wr_en && (>>1$rd == $rs2);
-         
-      @3
-         //ALU
-         $result[31:0] = $is_addi  ? $src1_value +  $imm :
-                         $is_add   ? $src1_value +  $src2_value :
-                         $is_andi  ? $src1_value &  $imm :
-                         $is_ori   ? $src1_value |  $imm :
-                         $is_xori  ? $src1_value ^  $imm :
-                         $is_slli  ? $src1_value << $imm[5:0]:
-                         $is_srli  ? $src1_value >> $imm[5:0]:
-                         $is_and   ? $src1_value &  $src2_value:
-                         $is_or    ? $src1_value |  $src2_value:
-                         $is_xor   ? $src1_value ^  $src2_value:
-                         $is_sub   ? $src1_value -  $src2_value:
-                         $is_sll   ? $src1_value << $src2_value:
-                         $is_srl   ? $src1_value >> $src2_value:
-                         $is_sltu  ? $sltu_rslt[31:0]:
-                         $is_sltiu ? $sltiu_rslt[31:0]:
-                         $is_lui   ? {$imm[31:12], 12'b0}:
-                         $is_auipc ? $pc + $imm:
-                         $is_jal   ? $pc + 4:
-                         $is_jalr  ? $pc + 4:
-                         $is_srai  ? ({ {32{$src1_value[31]}} , $src1_value} >> $imm[4:0]) :
-                         $is_slt   ? (($src1_value[31] == $src2_value[31]) ? $sltu_rslt : {31'b0, $src1_value[31]}):
-                         $is_slti  ? (($src1_value[31] == $imm[31]) ? $sltiu_rslt : {31'b0, $src1_value[31]}) :
-                         $is_sra   ? ({ {32{$src1_value[31]}}, $src1_value} >> $src2_value[4:0]) :
-                         $is_load  ? $src1_value +  $imm :
-                         $is_s_instr ? $src1_value + $imm :
-                                    32'bx;
-         
-         $sltu_rslt[31:0]  = $src1_value <  $src2_value;
-         $sltiu_rslt[31:0] = $src1_value <  $imm;
-         
-         //Jump instruction target PC computation
-         $jalr_tgt_pc[31:0] = $imm[31:0] + $src1_value[31:0]; 
-         
-         //Branch resolution
+         $result[31:0] = $is_addi ? $src1_value + $imm :
+                         $is_add ? $src1_value + $src2_value : 
+                         $is_or ? $src1_value | $src2_value : 
+                         $is_ori ? $src1_value | $imm :
+                         $is_xor ? $src1_value ^ $src2_value :
+                         $is_xori ? $src1_value ^ $imm :
+                         $is_and ? $src1_value & $src2_value :
+                         $is_andi ? $src1_value & $imm :
+                         $is_sub ? $src1_value - $src2_value :
+                         $is_slti ? (($src1_value[31] == $imm[31]) ? $sltiu_result : {31'b0,$src1_value[31]}) :
+                         $is_sltiu ? $sltiu_result :
+                         $is_slli ? $src1_value << $imm[5:0] :
+                         $is_srli ? $src1_value >> $imm[5:0] :
+                         $is_srai ? ({{32{$src1_value[31]}}, $src1_value} >> $imm[4:0]) :
+                         $is_sll ? $src1_value << $src2_value[4:0] :
+                         $is_slt ? (($src1_value[31] == $src2_value[31]) ? $sltu_result : {31'b0,$src1_value[31]}) :
+                         $is_sltu ? $sltu_result :
+                         $is_srl ? $src1_value >> $src2_value[5:0] :
+                         $is_sra ? ({{32{$src1_value[31]}}, $src1_value} >> $src2_value[4:0]) :
+                         $is_lui ? ({$imm[31:12], 12'b0}) :
+                         $is_auipc ? $pc + $imm :
+                         $is_jal ? $pc + 4 :
+                         $is_jalr ? $pc + 4 : 
+                         ($is_load || $is_s_instr) ? $src1_value + $imm : 32'bx;
+                         
+      // Register File Write
+         $rf_wr_en = ($rd_valid && $valid && $rd != 5'b0) || >>2$valid_load;
+         ?$rf_wr_en
+            $rf_wr_index[4:0] = !$valid ? >>2$rd[4:0] : $rd[4:0];
+      
+         $rf_wr_data[31:0] = !$valid ? >>2$ld_data[31:0] : $result[31:0];
+      
+      // Branch
          $taken_br = $is_beq ? ($src1_value == $src2_value) :
                      $is_bne ? ($src1_value != $src2_value) :
                      $is_blt ? (($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31])) :
                      $is_bge ? (($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31])) :
                      $is_bltu ? ($src1_value < $src2_value) :
-                     $is_bgeu ? ($src1_value >= $src2_value) :
-                     1'b0;
-         
-         //Current instruction is valid if one of the previous 2 instructions were not (taken_branch or load or jump)
-         $valid = ~(>>1$valid_taken_br || >>2$valid_taken_br || >>1$is_load || >>2$is_load || >>2$jump_valid || >>1$jump_valid);
-         
-         //Current instruction is valid & is a taken branch
+                     $is_bgeu ? ($src1_value >= $src2_value) : 1'b0;
+                     
          $valid_taken_br = $valid && $taken_br;
          
-         //Current instruction is valid & is a load
+      // Load
          $valid_load = $valid && $is_load;
-         
-         //Current instruction is valid & is jump
-         $jump_valid = $valid && $is_jump;
-         $jal_valid  = $valid && $is_jal;
-         $jalr_valid = $valid && $is_jalr;
-         
-         //Destination register update - ALU result or load result depending on instruction
-         $rf_wr_en = (($rd != '0) && $rd_valid && $valid) || >>2$valid_load;
-         $rf_wr_index[4:0] = $valid ? $rd[4:0] : >>2$rd[4:0];
-         $rf_wr_data[31:0] = $valid ? $result[31:0] : >>2$ld_data[31:0];
-         
+         $valid = !(>>1$valid_taken_br || >>2$valid_taken_br || >>1$valid_load || >>2$valid_load || >>1$valid_jump || >>2$valid_jump);
+      
+      // Jump
+         $valid_jump = $valid && $is_jump;
+                  
       @4
-         //Data memory access for load, store
-         $dmem_addr[3:0]     =  $result[5:2];
-         $dmem_wr_en         =  $valid && $is_s_instr;
-         $dmem_wr_data[31:0] =  $src2_value[31:0];
-         $dmem_rd_en         =  $valid_load;
+         $dmem_rd_en = $valid_load;
+         $dmem_wr_en = $valid && $is_s_instr;
+         $dmem_addr[3:0] = $result[5:2];
+         $dmem_wr_data[31:0] = $src2_value[31:0];
          
-      
-         //Write back data read from load instruction to register
-         $ld_data[31:0]      =  $dmem_rd_data[31:0];
+      @5   
+         $ld_data[31:0] = $dmem_rd_data[31:0];
          
-      
-      
-
       // Note: Because of the magic we are using for visualisation, if visualisation is enabled below,
       //       be sure to avoid having unassigned signals (which you might be using for random inputs)
       //       other than those specifically expected in the labs. You'll get strange errors for these.
 
-   
+         `BOGUS_USE($is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu)
+         `BOGUS_USE($is_sb $is_sh $is_sw)
    // Assert these to end simulation (before Makerchip cycle limit).
-   //Checks if sum of numbers from 1 to 9 is obtained in reg[17] and runs 10 cycles extra after this is met
-   *passed = |cpu/xreg[17]>>10$value == (1+2+3+4+5+6+7+8+9);
-   //Run for 200 cycles without any checks
-   //*passed = *cyc_cnt > 200;
-   *failed = 1'b0;
+   \SV_plus
+      always @ (posedge CLK) begin
+         *OUT = |cpu/xreg[14]>>5$value;                
+      end
    
    // Macro instantiations for:
    //  o instruction memory
@@ -1167,11 +1144,12 @@ $valid = $reset ? 1'b0 : ($start) ? 1'b1 : (>>3$valid) ;
       m4+imem(@1)    // Args: (read stage)
       m4+rf(@2, @3)  // Args: (read stage, write stage) - if equal, no register bypass is required
       m4+dmem(@4)    // Args: (read/write stage)
-   
-   m4+cpu_viz(@4)    // For visualisation, argument should be at least equal to the last stage of CPU logic
-                       // @4 would work for all labs
+
+     
 \SV
+   
    endmodule
+
 ```
 
 ### SIMULATION STATUS :
@@ -1197,7 +1175,81 @@ $valid = $reset ? 1'b0 : ($start) ? 1'b1 : (>>3$valid) ;
 
 </details>      
 
+# TASK 8 
+( 22/08/2024 )
 
+<details>
+      <summary> RISC-V Pre synthesis simulation using IVerilog and GTKWave </summary>
+
+## AIM : Comparision of RISC-V Pre-Synthesis Simulation outputs using Iverilog GTKwave and Makerchip
+
+The RISC-V processor was designed using TL-Verilog in the Makerchip IDE. To implement it on an FPGA, it needs to be converted to Verilog, which was done using the Sandpiper-SaaS compiler. Pre-synthesis simulations were then performed using the GTKWave simulator.
+
+**Step-by-Step process of simulation:**
+
+**Step 1:** Install the Required Packages:
+```
+sudo apt install make python python3 python3-pip git iverilog gtkwave docker.io
+sudo chmod 666 /var/run/docker.sock
+cd ~
+pip3 install pyyaml click sandpiper-saas
+```
+**Step 2:** Now clone the given repository in the home directory :
+```
+cd ~
+git clone https://github.com/manili/VSDBabySoC.git
+```
+
+![image](https://github.com/user-attachments/assets/f488129e-6ba1-4c0c-a898-70f5037fb5a5)
+
+**Step 3:** Replace the .tlv file in the VSDBabySoC/src/module folder with our RISC-V .tlv file which we want to convert into verilog.
+
+**Step 4:** Change the working directory to VSDBabySoC.
+```
+cd VSDBabySoC
+```
+**Step 5:** Translate .tlv definition of RISC-V into .v definition by giving the following command:
+```
+sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
+```
+
+![image](https://github.com/user-attachments/assets/125c2656-bdaa-4d84-9905-8557cc4f110c)
+
+**Step 6:** Create the pre_synth_sim.vcd file by running the following command:
+```
+make pre_synth_sim
+```
+![image](https://github.com/user-attachments/assets/c8d30bdb-16a3-4823-a71d-69eb37406d82)
+
+**Step 7:** Compile and simulate RISC-V design by running the following command:
+```
+$ iverilog -o output/pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module -
+```
+**Step 8:** The result of the simulation (i.e. pre_synth_sim.vcd) will be stored in the output/pre_synth_sim directory. Therefore change the working directory to output.
+```
+cd output
+./pre_synth_sim.out
+```
+![image](https://github.com/user-attachments/assets/fa240a85-a340-405a-bc0e-ea2cf590f4ee)
+
+
+**Step 9:** Open the .vcd simulation file through GTKWave simulation tool by running the following command:
+```
+gtkwave pre_synth_sim.vcd
+```
+![image](https://github.com/user-attachments/assets/9e9a0d50-01d5-4f84-88b1-5bbd6a3fa6c2)
+
+
+**GTKWave Output Waveform**
+
+![image](https://github.com/user-attachments/assets/3e48f3cf-c6a4-485d-8bd5-7039052e7df8)
+
+**Comparison of the Output Waveforms**
+
+![image](https://github.com/user-attachments/assets/5d933f75-b673-42c8-966b-0f7d7297bdb1)
+
+
+</details>
 
 
 
