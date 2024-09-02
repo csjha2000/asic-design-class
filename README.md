@@ -7,6 +7,7 @@
 - **TASK 6:** [Write a simple application in 'C' that can be compiled using GCC and RISC-V GCC.](#task-6)
 - **TASK 7:** [Building a 5-stage pipelined RISC-V processor.](#task-7)
 - **TASK 8:** [RISC-V Pre synthesis simulation using IVerilog and GTKWave.](#task-8)
+- **TASK 9:** [RISC-V Pre synthesis Analog simulation using IVerilog and GTKWave.](#task-9)
       
   
 
@@ -1252,7 +1253,124 @@ gtkwave pre_synth_sim.vcd
 </details>
 
 
+# TASK 9 
+( 29/08/2024 )
 
+<details>
+      <summary> RISC-V Pre synthesis Analog simulation using IVerilog and GTKWave. </summary>
+
+## AIM : Analyzing RISC-V Pre-Synthesis Analog Simulation outputs using Iverilog GTKwave.
+
+## SUB-TASK 1 : TOOLS INSTALLATION:
+
+Commands to install Yosys in UBUNTU(Linux) :
+
+```
+   $ git clone https://github.com/YosysHQ/yosys.git
+    $ cd yosys
+    $ sudo apt install make (If make is not installed) 
+    $ sudo apt-get install build-essential clang bison flex \
+        libreadline-dev gawk tcl-dev libffi-dev git \
+        graphviz xdot pkg-config python3 libboost-system-dev \
+        libboost-python-dev libboost-filesystem-dev zlib1g-dev
+    $ make config-gcc
+    $ make 
+    $ sudo make install
+```
+
+To verify the installation of yosys, type yosys in terminal window :
+
+![Screenshot from 2024-09-02 15-16-25](https://github.com/user-attachments/assets/40c4ce97-7041-4878-9a2d-8d851f52ef40)
+
+Commands to install IVerilog in UBUNTU(Linux) :
+
+  ```
+  sudo apt-get install iverilog
+  ```
+Below screenshot verifies the installation of iverilog in the system :
+
+![Screenshot from 2024-09-02 15-24-43](https://github.com/user-attachments/assets/2f6e8f40-8bb3-4843-a0bc-29f4d39608b1)
+
+Commands to install GTKWave in UBUNTU(Linux) :
+
+```
+    sudo apt update
+    sudo apt install gtkwave
+```
+
+Below screenshot verifies the installation of gtkwave in the system :
+
+![Screenshot from 2024-09-02 15-27-23](https://github.com/user-attachments/assets/9fad1a75-8d3d-4a3e-98c2-88148ad7af18)
+
+Commands to install OpenSTA in UBUNTU(Linux) :
+
+```
+git clone https://github.com/The-OpenROAD-Project/OpenSTA.git
+cd OpenSTA
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+
+Below screenshot verifies the installation of OpenSTA in the system :
+
+![Screenshot from 2024-09-02 15-30-29](https://github.com/user-attachments/assets/0fbd69f2-69c0-4680-807f-1f3ea867aebc)
+
+
+## SUB-TASK 2 : BabySoC Simulation  
+
+VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designing such a small SoC is to test three open-source IP cores together for the first time and calibrate the analog part of it. VSDBabySoC contains one RVMYTH microprocessor, an 8x-PLL to generate a stable clock, and a 10-bit DAC to communicate with other analog devices.
+
+
+___Phase-Locked-Loop (PLL)___
+
+A Phase-Locked Loop (PLL) is an electronic circuit that synchronizes an output signal's phase and frequency with a reference signal. It typically consists of three main components:
+
+- Phase Detector: Compares the phase of the reference signal with the output signal and generates an error signal based on the difference.
+
+- Loop Filter: Processes the error signal to smooth it out, reducing noise and improving stability.
+
+- Voltage-Controlled Oscillator (VCO): Adjusts its output frequency based on the filtered error signal to minimize the phase difference.
+
+The PLL is widely used in applications such as clock generation, frequency synthesis, and data recovery in communication systems.
+
+___Digital-to-Analog Converter (DAC)___
+
+A Digital-to-Analog Converter (DAC) is an electronic device that converts digital signals (typically binary) into analog signals (such as voltage or current).
+
+This conversion is crucial in systems where digital data needs to be interpreted by analog devices or for output to be perceived by humans, like in audio and video equipment.
+
+DACs are commonly used in applications like audio playback, video display, and signal processing.
+
+
+Commands to Run the `rvmyth.v` File
+```
+cd VSDBabySoC
+```
+```
+iverilog -o ./pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module/
+```
+
+```
+./pre_synth_sim.out
+```
+```
+gtkwave pre_synth_sim.vcd
+```
+In the below screenshot, the output of the sum 1 to 9 can be observed after simulation.
+
+![Screenshot from 2024-09-02 15-53-06](https://github.com/user-attachments/assets/fb1fd210-daf3-4cb0-8543-43ddd375dc97)
+
+- **CLK** is the output clk signal from the PLL module.
+- **clk_CHA** is the clock used by the RISC-V CPU for the operations.
+- **reset** is the reset signal for the RISC-V CPU.
+- **REF** is the input clk reference signal to the PLL module.  
+- **OUT** is the DAC output signal.
+
+
+</details>
 
 
 
