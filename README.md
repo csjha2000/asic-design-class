@@ -1370,6 +1370,12 @@ In the below screenshot, the output of the sum 1 to 9 can be observed after simu
 - **OUT** is the DAC output signal.
 
 
+Th **ZOOMED OUT** image of the waveform is shown below: 
+
+![Screenshot from 2024-09-04 14-36-43](https://github.com/user-attachments/assets/5f67ea71-9beb-4d35-981b-706148b7a861)
+
+
+
 </details>
 
 
