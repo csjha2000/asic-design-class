@@ -1858,11 +1858,14 @@ write_verilog -noattr good_mux_netlist.v
 
 
 <details>
-      <summary> LAB 4 :   </summary>
+      <summary> LAB 4 : Introduction to timing.lib </summary>
       
-## LAB 3 - AIM : 
+## LAB 4 - AIM : Walkthrough to the Libraries 
 
+```
+gvim ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 
+```
 </details>
 
 
