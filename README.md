@@ -8,6 +8,7 @@
 - **TASK 7:** [Building a 5-stage pipelined RISC-V processor.](#task-7)
 - **TASK 8:** [RISC-V Pre synthesis simulation using IVerilog and GTKWave.](#task-8)
 - **TASK 9:** [RISC-V Pre synthesis Analog simulation using IVerilog and GTKWave.](#task-9)
+- **TASK 10:** [RTL design using Verilog with SKY130 Technology.](#task-10)
       
   
 
@@ -348,6 +349,342 @@ So now lets check out the waveform of the given instructions.
 
 - 1. ` ADD R4, R4, R4 `
      The waveform for the above command using the provided verilog code is given below :
+
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+        ![2](https://github.com/user-attachments/assets/43dc9c01-ed72-4f49-814c-ffd30469d504)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![2 1](https://github.com/user-attachments/assets/93d006b0-911a-4325-85bc-351ff8efb641)
+
+- 3. ` AND R4, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![3](https://github.com/user-attachments/assets/e47123f4-6d60-4111-9e12-320ae038e654)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![3 1](https://github.com/user-attachments/assets/10c72c11-80a5-4c37-bb64-cdce287b8ff6)
+
+- 4. ` OR R8, R4, R5 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![4](https://github.com/user-attachments/assets/ac816748-b03b-48ef-80cf-97787d190f64)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![4 1](https://github.com/user-attachments/assets/2706aaa9-dcd0-4c3e-9a57-b73c4f08164b)
+
+- 5. ` XOR R8, R4, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![5](https://github.com/user-attachments/assets/421dbaa9-2ded-459f-af46-812b90ae9346)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![5 1](https://github.com/user-attachments/assets/9094c376-87af-4bb5-bfd5-ca3793d11940)
+
+- 6. ` SLT R00, R1, R4 `
+     The waveform for the above command using the provided verilog code is given below :
+
+     ![6](https://github.com/user-attachments/assets/5a78a98d-ee70-40cb-88e2-aef14845fb6d)
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+
+     The waveform for the hardcoded command present in the code is given below :
+
+     ![6 1](https://github.com/user-attachments/assets/062942fc-251f-4528-810e-e7d93eeaa3f5)
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
+
+
+- 7. ` ADDI R02, R2, 5 `
+
+     The waveform for the above command using the provided verilog code is given below :
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+Attach files by dragging & dropping, selecting or pasting them.
 
      ![1](https://github.com/user-attachments/assets/50c4e52a-2530-4578-9e99-4501a0d672a1)
 
@@ -1380,37 +1717,153 @@ Th **ZOOMED OUT** image of the waveform is shown below:
 
 
 
+# TASK 10
+( 15/10/2024 )
+
+<details>
+      <summary> LAB 1 : Downloading of the files from the GitHub Repository  </summary>
+      
+## LAB 1 - AIM : Downloading of the files from the GitHub Repository 
+
+Steps to follow: 
+```
+sudo -i
+sudo apt-get install git
+cd /home/chandra-shekhar-jha/VLSI     # go to your home directory
+git clone https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+cd sky130RTLDesignAndSynthesisWorkshop
+cd verilog_files
+ls
+```
+Below is the Snapshot of the above commands :
+
+![lab1](https://github.com/user-attachments/assets/59a9ec3d-3990-4ae9-922b-614f6a1e7446)
+
+
+</details>
 
 
 
+<details>
+      <summary> LAB 2 : Simulation of '2:1 MULTIPLEXER' using IVerilog and GTKWave. </summary>
+      
+## LAB 2 - AIM : Simulation of a ' 2:1 MULTIPLEXER ' using IVerilog and GTKWave. 
+
+### Block Diagram of Simulation Flow in IVerilog :
+
+![lab2 2](https://github.com/user-attachments/assets/16693310-2d05-41c2-86f5-b43c80589113)
+Simulator continuously checks for changes in the input. If there is any change in input, the output is evaluated else the simulator will never evaluate the output.
 
 
+The .v files of 2:1 multiplexer and its testbench is already present in the 'verilog_file' folder.
+
+![lab2 1](https://github.com/user-attachments/assets/bf029fe5-a7a8-430d-9f60-e1a361b20513)
+
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog good_mux.v tb_good_mux.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_good_mux.vcd
+```
+Below is the Snapshot of the above commands:
+
+![lab2](https://github.com/user-attachments/assets/a7245c37-0a50-42f2-897d-e88155183693)
+
+</details>
 
 
+<details>
+      <summary> LAB 3 : Synthesis of 2:1 Multiplexer using Yosys and Logic Synthesis.  </summary>
+      
+## LAB 3 - AIM : Synthesis of 2:1 Multiplexer using Yosys and Logic Synthesis.
+
+### Yosys
+
+Synthesizer is a tool for converting the RTL to Netlist and here we are using the Yosys as the Synthesizer.
+
+A synthesizer plays a key role in digital design by transforming RTL (Register Transfer Level) code into a gate-level netlist. This netlist provides a detailed description of the circuit, outlining the logical gates and their interconnections, and serves as the foundation for later stages like place and route. In this design flow, the synthesizer being used is Yosys, an open-source tool for Verilog HDL synthesis. Yosys applies several optimization techniques to generate an efficient gate-level implementation from the RTL code.
+
+### Block Diagram of Yosys setup :
+
+![3 1](https://github.com/user-attachments/assets/4bb86a05-c226-486f-9b89-01610cb188a2)
+
+### Block Diagram of Systhesis Verification :
+
+![3 2](https://github.com/user-attachments/assets/918ab5b7-25c6-4c82-8e82-54a27c8846c7)
+
+Note: The set of primary inputs and primary outputs remains unchanged between the RTL design and the synthesized netlist. Therefore, the same test bench can be used for both.
+
+### Logic Systhesis
+
+RTL Design: The design is described using a behavioral representation in Hardware Description Language (HDL) based on the required specifications.
+
+Synthesis: The RTL (Register Transfer Level) code is translated into a gate-level representation. This process converts the design into gates and interconnections, resulting in a file known as the netlist.
+
+![3 3](https://github.com/user-attachments/assets/d491f91a-9f97-4a17-bf44-b26df28b6d5a)
+
+#### Command steps for Yosys
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Load the sky130 standard library.
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib      
+```
+Read the design files
+```
+read_verilog good_mux.v        
+```
+![3 4](https://github.com/user-attachments/assets/6067a3d7-1513-4ec8-9801-e2e492ac18ee)
+
+Synthesize the top level module
+```
+synth -top good_mux     
+```
+![3 5](https://github.com/user-attachments/assets/b743ec0d-f297-4f16-8444-eaa142c69829)
+
+Map to the standard library
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+![3 6](https://github.com/user-attachments/assets/22f988c7-2749-4497-a0e8-50e433edd7ba)
+![3 7](https://github.com/user-attachments/assets/806e0200-b1e4-43d5-bb87-2d50e8cbe1d1)
+
+In order to see graphical version of the logic it has realized just type :
+```
+show
+```
+![3 8](https://github.com/user-attachments/assets/4fa8d8bb-9c7e-4fc7-a728-008355e14b57)
+
+Now, To write the result netlist to a file use the write_veriog command. 
+This will output the netlist to a file in the current directory.
+```
+write_verilog -noattr good_mux_netlist.v
+!gvim good_mux_netlist.v
+
+```
+![3 9](https://github.com/user-attachments/assets/5e4f7796-5f55-4e1d-89de-95968321fd6c)
 
 
+</details>
 
 
+<details>
+      <summary> LAB 4 :   </summary>
+      
+## LAB 3 - AIM : 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
+</details>
 
 
 
