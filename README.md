@@ -1860,15 +1860,49 @@ write_verilog -noattr good_mux_netlist.v
 <details>
       <summary> LAB 4 : Introduction to timing.lib </summary>
       
-## LAB 4 - AIM : Walkthrough to the Libraries 
+## LAB 4 - AIM : Introduction and Walkthrough to ' dot lib '.
+
+'.lib' is like a collection of standard cells. It contains slow cells, fast cells and many more things.
+In order to view the '.lib' files, Enter the following command : 
 
 ```
-gvim ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+sudo -i
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/lib
+gvim sky130_fd_sc_hd__tt_025C_1v80.lib
 
 ```
+Press ` Shift + : syn off `
+
+![4 1](https://github.com/user-attachments/assets/aabbb278-8824-4b42-953a-62486871930d)
+It gives information about the type of process (like here it is 130nm tech) and the process condition like temperature, voltage, etc
+It also define various constraints like the units of the variables, type of technology:
+
+   - technology("cmos").
+   - delay_model : "table_lookup".
+   - bus_naming_style : "%s[%d]".
+   - time_unit : "1ns".
+   - voltage_unit : "1V".
+   - leakage_power_unit : "1nW".
+   - current_unit : "1mA".
+   - pulling_resistance_unit : "1kohm".
+   - capacitive_load_unit(1.0000000000, "pf").
+
+It also tells about the features of different cells like leakage power, power consumption, area, input capacitance and delay for different input combination
+
+Lets observe the simple 2 input AND gate
+
+![4 2](https://github.com/user-attachments/assets/b42b133f-32f2-43cb-846a-7ffa331a71ae)
+
+
 </details>
 
 
+<details>
+      <summary> LAB 5 : ABHI KARNA BAAKI HAI</summary>
+      
+## LAB 5 - AIM : 
+
+</details>
 
 
 
