@@ -2321,11 +2321,21 @@ show
 
 
 <details>
-      <summary> LAB 6 (Day 3) : Optimization of various Designs </summary>
+      <summary> LAB 6 (Day 3) : Optimization of various Combinational Designs </summary>
       
-## LAB 6 - AIM : Optimization of various Designs 
+## LAB 6 - AIM : Optimization of various Combinational Designs 
 
--  2 input AND gate.
+### Optimization of various Combinational Designs 
+
+- 2 input AND gate.
+- 2 input OR gate.
+- 3 input AND gate.
+- 2 input XNOR Gate (3 input Boolean Logic)
+- Multiple Module Optimization-1 
+- Multiple Module Optimization-2
+
+  
+### 1. 2 input AND gate.
 
   The velilog code is given below :
 
@@ -2380,8 +2390,7 @@ show
 ![6 8](https://github.com/user-attachments/assets/1757827b-c54e-4f7b-a342-bf55ee4fe423)
 
 
-
--   2 input OR gate.
+### 2.  2 input OR gate.
 
   The velilog code is given below :
 
@@ -2438,7 +2447,7 @@ show
 
 
 
--   3 input AND gate.
+### 3.  3 input AND gate.
 
   The velilog code is given below :
 
@@ -2495,7 +2504,7 @@ show
 ![6 12](https://github.com/user-attachments/assets/5daef2f7-6b4e-4a4b-b8c7-70bc620c4091)
 
 
--  2 input XNOR Gate (3 input Boolean Logic)
+### 4.  2 input XNOR Gate (3 input Boolean Logic)
 
   The velilog code is given below :
 
@@ -2553,7 +2562,834 @@ show
 
 
 
+
+### 5.  Multiple Module Optimization-1 
+
+  The velilog code is given below :
+
+```
+module sub_module1(input a, input b, output y);
+	assign y = a & b;
+endmodule
+
+module sub_module2 (input a, input b output y);
+	assign y = a^b;
+endmodule
+
+module multiple_module_opt(input a, input b input c, input d output y);
+	wire n1,n2, n3;
+
+	sub_module1 U1 (.a(a), .b(1'b1), .y(n1));
+	sub_module2 U2 (.a(n1), .b(1'b0), .y(n));
+	sub_module2 U3 (.a(b), .b(d), .y(n3));
+
+	assign y = c | (b & n1);
+endmodule
+```
+
+  #### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog multiple_module_opt.v
+```
+Synthesize the Design
+```
+synth -top multiple_module_opt
+```
+
+![6 15](https://github.com/user-attachments/assets/259e1099-a8bb-41cb-bc54-5b1aab2fb855)
+
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+Use of Flattening: Merges all hierarchical modules in the design into a single module to create a flat netlist for this just type
+```
+flatten
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 16](https://github.com/user-attachments/assets/db4a0df2-5357-4c83-b17f-80a164e70c58)
+
+
+
+
+
+
+### 6. Multiple Module Optimization-2 
+
+  The velilog code is given below :
+
+```
+module sub_module(input a input b output y);
+	assign y = a & b;
+endmodule
+
+module multiple_module_opt2(input a, input b input c, input d, output y);
+	wire n1,n2, n3;
+
+	sub_module U1 (.a(a), .b(1'b0), y(n));
+	sub_module U2 (.a(b), .b(c), .y(n2));
+	sub_module U3 (.a(n2), .b(d), .y(n));
+	sub_module U4 (.a(n3), .b(n1), .y(y));
+endmodule
+```
+
+  #### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog multiple_module_opt2.v
+```
+Synthesize the Design
+```
+synth -top multiple_module_opt2
+```
+
+![6 17](https://github.com/user-attachments/assets/06e193bb-a307-4dc4-90aa-4ce4851fc7a4)
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+
+Use of Flattening: Merges all hierarchical modules in the design into a single module to create a flat netlist for this just type
+```
+flatten
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 18](https://github.com/user-attachments/assets/ab77a558-89b1-4f08-9e7a-f977d7c4b1b3)
+
+
+
 </details>
 
 
 
+
+<details>
+      <summary> LAB 7 (Day 3) : Optimization of various Sequential Designs </summary>
+      
+## LAB 6 - AIM : Optimization of various Sequential Designs 
+
+### Optimization of various Sequential Designs 
+
+- D-Flipflop Constant 1 with Asynchronous Reset (active low) 
+- D-Flipflop Constant 2 with Asynchronous Reset (active high) 
+- D-Flipflop Constant 3 with Synchronous Reset (active low) 
+- D-Flipflop Constant 4 with Synchronous Reset (active high) 
+- D-Flipflop Constant 5 with Synchronous Reset 
+- Counter Optimization 1
+- Counter Optimization 2
+
+  
+### 1. D-Flipflop Constant 1 with Asynchronous Reset (active low) 
+
+
+
+The velilog code for the asynchronous reset (active low) is given below :
+```
+module dff_const1(input clk, input reset, output reg q); 
+always @(posedge clk, posedge reset)
+begin
+	if(reset)
+		q <= 1'b0;
+	else
+		q <= 1'b1;
+end
+endmodule
+```
+
+Testbench code is as follows:
+```
+module tb_dff_const1; 
+	reg clk, reset;
+	wire q;
+
+	dff_const1 uut (.clk(clk),.reset(reset),.q(q));
+
+	initial begin
+		$dumpfile("tb_dff_const1.vcd");
+		$dumpvars(0,tb_dff_const1);
+		// Initialize Inputs
+		clk = 0;
+		reset = 1;
+		#3000 $finish;
+	end
+
+	always #10 clk = ~clk;
+	always #1547 reset=~reset;
+endmodule
+```
+
+##### Command steps :
+
+Go to the required directory
+```
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog dff_const1.v tb_dff_const1.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_dff_const1.vcd
+```
+Below is the Snapshot of the above commands and the resultant Waveforms:
+
+![7 1 1](https://github.com/user-attachments/assets/960a1f0a-fae1-491c-9763-f88adeeffcd2)
+
+OBSERVATION : From the waveform, it can be observed that the Q output is always high when reset is zero, and reset doesn't depend on clock edge.
+
+
+### SYNTHESIS :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog dff_const1.v
+```
+Synthesize the Design
+```
+synth -top dff_const1
+```
+
+![7 2](https://github.com/user-attachments/assets/5a016f72-c01f-4f37-8cd9-74c901b062a0)
+
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![7 3](https://github.com/user-attachments/assets/d425e026-786b-4c1f-84a3-481d4bddfcd6)
+
+
+OBSERVATION : Since reset doesn't depend on clock edge, therefore the D Flip Flop has not been removed.
+
+
+
+
+### 2. D-Flipflop Constant 2 with Asynchronous Reset (active high) 
+
+
+
+The velilog code for the asynchronous reset (active high) is given below :
+```
+module dff_const1(input clk, input reset, output reg q); 
+always @(posedge clk, posedge reset)
+begin
+	if(reset)
+		q <= 1'b1;
+	else
+		q <= 1'b1;
+end
+endmodule
+```
+
+Testbench code is as follows:
+```
+module tb_dff_const2; 
+	reg clk, reset;
+	wire q;
+
+	dff_const2 uut (.clk(clk),.reset(reset),.q(q));
+
+	initial begin
+		$dumpfile("tb_dff_const1.vcd");
+		$dumpvars(0,tb_dff_const1);
+		// Initialize Inputs
+		clk = 0;
+		reset = 1;
+		#3000 $finish;
+	end
+
+	always #10 clk = ~clk;
+	always #1547 reset=~reset;
+endmodule
+```
+
+##### Command steps :
+
+Go to the required directory
+```
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog dff_const2.v tb_dff_const2.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_dff_const2.vcd
+```
+Below is the Snapshot of the above commands and the resultant Waveforms:
+
+![7 4](https://github.com/user-attachments/assets/19d5fd4b-97e1-4754-b661-2d2b9f882ad3)
+
+
+OBSERVATION : From the waveform, it can be observed that the Q output is always high irrespective of reset.
+
+### SYNTHESIS :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog dff_const2.v
+```
+Synthesize the Design
+```
+synth -top dff_const2
+```
+![7 5](https://github.com/user-attachments/assets/5687c6d2-81eb-4350-8f40-284a4e110b23)
+
+OBSERVATION : None D Flip Flop has been synthesised.
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![7 6](https://github.com/user-attachments/assets/78dbc377-8b1c-4887-8716-a7df71e45cec)
+
+
+
+OBSERVATION : Since output q doesn't depend on reset edgeand is always 1, therefore the D Flip Flop has been removed.
+
+
+### 3. D-Flipflop Constant 3 with Synchronous Reset (active low) 
+
+
+
+The velilog code for the synchronous reset (active low) is given below :
+```
+module dff_const3(input clk, input reset, output reg q); 
+	reg q1;
+
+	always @(posedge clk, posedge reset)
+	begin
+		if(reset)
+		begin
+			q <= 1'b1;
+			q1 <= 1'b0;
+		end
+		else
+		begin	
+			q1 <= 1'b1;
+			q <= q1;
+		end
+	end
+endmodule
+```
+
+Testbench code is as follows:
+```
+module dff_const3(input clk, input reset, output reg q); 
+	reg q1;
+
+	always @(posedge clk, posedge reset)
+	begin
+		if(reset)
+		begin
+			q <= 1'b1;
+			q1 <= 1'b0;
+		end
+		else
+		begin	
+			q1 <= 1'b1;
+			q <= q1;
+		end
+	end
+endmodule
+```
+
+
+### SYNTHESIS :
+
+
+
+##### Command steps :
+
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog dff_const3.v
+```
+Synthesize the Design
+```
+synth -top dff_const3
+```
+
+![7 7](https://github.com/user-attachments/assets/301ea84d-04a9-4122-9501-9e5205878161)
+
+
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+
+![7 8](https://github.com/user-attachments/assets/e4c3335c-5ab3-4759-a725-388468554fc3)
+
+
+
+OBSERVATION : This module defines a D flip-flop, for a positive edge of reset, q is set to 1 and q1 is set to 0. On each clock cycle, q1 is set to 1, and q is updated with the value of q1.
+
+When synthesized, the design will result in a flip-flop where q becomes 1 after the first clock cycle post-reset and stays 1 afterward.
+
+
+
+### 4. D-Flipflop Constant 4 with Synchronous Reset (active high) 
+
+
+
+The velilog code for the synchronous reset (active high) is given below :
+```
+module dff_const4(input clk, input reset, output reg q); 
+	reg q1;
+
+	always @(posedge clk, posedge reset)
+	begin
+		if(reset)
+		begin
+			q <= 1'b1;
+			q1 <= 1'b1;
+		end
+		else
+		begin	
+			q1 <= 1'b1;
+			q <= q1;
+		end
+	end
+endmodule
+```
+
+
+
+
+### SYNTHESIS :
+
+
+
+##### Command steps :
+
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog dff_const4.v
+```
+Synthesize the Design
+```
+synth -top dff_const4
+```
+![7 9](https://github.com/user-attachments/assets/e8047d94-d12e-4bf4-aed6-8d89cc526e87)
+
+
+
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+
+![7 10](https://github.com/user-attachments/assets/3967c1cd-3e5d-4833-8f3f-8494ad9c221c)
+
+
+
+
+OBSERVATION : This module defines a D flip-flop that sets both q and q1 to 1 on a positive edge of reset. On each clock cycle, q1 remains 1, and q is updated with the value of q1 (which is always 1).
+
+When synthesized, the design will result in a flip-flop where q is always 1, regardless of the reset or clock state.
+
+
+
+
+### 5. D-Flipflop Constant 5 with Synchronous Reset 
+
+
+
+The velilog code for the synchronous reset is given below :
+```
+module dff_const5(input clk, input reset, output reg q); 
+	reg q1;
+
+	always @(posedge clk, posedge reset)
+	begin
+		if(reset)
+		begin
+			q <= 1'b0;
+			q1 <= 1'b0;
+		end
+		else
+		begin	
+			q1 <= 1'b1;
+			q <= q1;
+		end
+	end
+endmodule
+```
+
+
+
+
+### SYNTHESIS :
+
+
+
+##### Command steps :
+
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog dff_const5.v
+```
+Synthesize the Design
+```
+synth -top dff_const5
+```
+![7 11](https://github.com/user-attachments/assets/d2600ce5-c6e0-40ea-b9d8-2eaf2f9211f5)
+
+
+
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+
+![7 12](https://github.com/user-attachments/assets/45062df5-1ba3-4758-86be-0814aa9b46d6)
+
+
+
+
+
+OBSERVATION : This module defines a D flip-flop that resets both q and q1 to 0 on a positive edge of reset. On each clock cycle, it sets q1 to 1 and then updates q with the value of q1 (which will always be 1 after the first cycle).
+
+When synthesized, the design will result in a flip-flop where q is always 1 after the first clock cycle post-reset.
+
+
+
+### 6. Counter Optimization 1
+
+
+
+The velilog code for the Counter Optimization 1 is given below :
+```
+module counter_opt (input clk, input reset, output q);
+	reg [2:0] count;
+	assign q = count[0];
+	
+	always @(posedge clk,posedge reset)
+	begin
+		if(reset)
+			count <= 3'b000;
+		else
+			count <= count + 1;
+	end
+endmodule
+```
+
+
+
+
+### SYNTHESIS :
+
+
+
+##### Command steps :
+
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog counter_opt.v
+```
+Synthesize the Design
+```
+synth -top counter_opt
+```
+![7 13](https://github.com/user-attachments/assets/863ddf5e-772b-4269-9311-0c833a39a1ed)
+
+
+
+
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![7 14](https://github.com/user-attachments/assets/386dcafb-b067-4e3a-af78-e00a56d1c80a)
+
+
+### 7. Counter Optimization 2
+
+
+
+The velilog code for the synchronous reset (active high) is given below :
+```
+module counter_opt2 (input clk, input reset, output q);
+	reg [2:0] count;
+	assign q = (count[2:0] == 3'b100);
+	
+	always @(posedge clk,posedge reset)
+	begin
+		if(reset)
+			count <= 3'b000;
+		else
+			count <= count + 1;
+	end
+endmodule
+```
+
+
+
+
+### SYNTHESIS :
+
+
+
+##### Command steps :
+
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog counter_opt2.v
+```
+Synthesize the Design
+```
+synth -top counter_opt2
+```
+
+
+Now Generate the Netlist
+```
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![7 15](https://github.com/user-attachments/assets/079da7f8-fb5b-4ad7-adcb-9e0ff187cc7e)
+
+</details>
