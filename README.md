@@ -1898,9 +1898,9 @@ It also tells about the features of different cells like leakage power, power co
 
 
 <details>
-      <summary> LAB 5 (Day 2) : Hierarchial synthesis vs Flat synthesis </summary>
+      <summary> LAB 5 (Day 2) : Hierarchial synthesis vs Flat synthesis and Various D - FlipFlop. </summary>
       
-## LAB 5 - AIM : Hierarchial synthesis vs Flat synthesis
+## LAB 5 - AIM : Hierarchial synthesis vs Flat synthesis and Various D - FlipFlop.
 
 ### Hierarchial synthesis
 
@@ -1983,13 +1983,9 @@ show
 
 
 
-</details>
 
-
-<details>
-      <summary> LAB 6 (Day 2) : Various D Flops coding styles, Simulation using Iverilog and GTKWave followed by Synthesis using Yosys. </summary>
       
-## LAB 6 - AIM : Various D Flops coding styles, Simulation using Iverilog and GTKWave followed by Synthesis using Yosys.
+## Various D Flops coding styles, Simulation using Iverilog and GTKWave followed by Synthesis using Yosys.
 
 
 ### Simulation of D-Flipflop using Iverilog and GTKWave. Performed simulations for 3 types of D-Flipflops 
@@ -2325,9 +2321,236 @@ show
 
 
 <details>
-      <summary> LAB 7 (Day 3) : abhi karna hai  </summary>
+      <summary> LAB 6 (Day 3) : Optimization of various Designs </summary>
       
-## LAB 7 - AIM : 
+## LAB 6 - AIM : Optimization of various Designs 
+
+-  2 input AND gate.
+
+  The velilog code is given below :
+
+```
+module opt_check(input a, input b, output y);
+	assign y = a?b:0;
+endmodule
+```
+#### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog opt_check.v
+```
+Synthesize the Design
+```
+synth -top opt_check
+```
+
+![6 7](https://github.com/user-attachments/assets/a06c1ae8-7b6c-49e1-a5d4-2018bd16d609)
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 8](https://github.com/user-attachments/assets/1757827b-c54e-4f7b-a342-bf55ee4fe423)
+
+
+
+-   2 input OR gate.
+
+  The velilog code is given below :
+
+```
+module opt_check2(input a, input b, output y);
+	assign y = a?1:b;
+endmodule
+```
+
+  #### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog opt_check2.v
+```
+Synthesize the Design
+```
+synth -top opt_check2
+```
+
+![6 9](https://github.com/user-attachments/assets/0bbccf98-598d-42dc-a840-3d239973820b)
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 10](https://github.com/user-attachments/assets/cfa8b4f5-3c2a-48ce-87e6-20c4d4f7c64d)
+
+
+
+-   3 input AND gate.
+
+  The velilog code is given below :
+
+```
+module opt_check2(input a, input b, input c, output y);
+	assign y = a?(b?c:0):0;
+endmodule
+```
+
+  #### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog opt_check3.v
+```
+Synthesize the Design
+```
+synth -top opt_check3
+```
+
+![6 11](https://github.com/user-attachments/assets/9c492893-2958-44dc-b974-962fce69d56b)
+
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 12](https://github.com/user-attachments/assets/5daef2f7-6b4e-4a4b-b8c7-70bc620c4091)
+
+
+-  2 input XNOR Gate (3 input Boolean Logic)
+
+  The velilog code is given below :
+
+```
+module opt_check2(input a, input b, input c, output y);
+	assign y = a ? (b ? ~c : c) : ~c;
+endmodule
+```
+
+  #### Command steps :
+
+Go to the required directory
+```
+cd ~
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog opt_check4.v
+```
+Synthesize the Design
+```
+synth -top opt_check4
+```
+
+![6 13](https://github.com/user-attachments/assets/09459887-3925-40c0-ad92-01f4a4f0b0a1)
+
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Removes unused or redundant logic in the design and purges any dangling wires or gates.
+```
+opt_clean -purge
+```
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![6 14](https://github.com/user-attachments/assets/8468f875-6fcb-4bb1-b908-b0bced05c4a4)
+
+
 
 
 </details>
