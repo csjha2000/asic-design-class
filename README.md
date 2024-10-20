@@ -3393,3 +3393,323 @@ show
 ![7 15](https://github.com/user-attachments/assets/079da7f8-fb5b-4ad7-adcb-9e0ff187cc7e)
 
 </details>
+
+
+
+
+
+
+
+
+<details>
+      <summary> LAB 8 (Day 4) : GLS, Synthesis-Simulation mismatch </summary>
+      
+## LAB 8 - AIM : GLS, Synthesis-Simulation mismatch for non - blocking statements.
+
+#### Gate Level Simulation (GLS) 
+
+Gate Level Simulation (GLS) is a crucial step in the verification process of digital circuits. It involves simulating the synthesized netlist, which is a lower-level representation of the design, using a testbench to verify its logical correctness and timing behavior. By comparing the simulated outputs to the expected outputs, GLS ensures that the synthesis process has not introduced any errors and that the design meets its performance requirements.
+
+![8 1](https://github.com/user-attachments/assets/10326a9f-b394-4414-b146-22b84d053742)
+
+Sensitivity lists are crucial for accurate circuit behavior. If a sensitivity list is incomplete, it can lead to unexpected latches. Blocking and non-blocking assignments within always blocks have different execution behaviors. Incorrect use of blocking assignments can unintentionally create latches, causing synthesis and simulation mismatches. To avoid these issues, it's essential to carefully analyze circuit behavior and ensure that the sensitivity list and assignments align with the desired functionality.
+
+
+#### GLS Simulation
+
+- ### Example 1: 2 x 1 MUX using ternary operator
+
+Verilog code:
+```
+module ternary_operator_mux (input i0 , input i1 , input sel , output y);
+assign y = sel?i1:i0;
+endmodule
+```
+Command steps for Simulation:
+
+```
+iverilog ternary_operator_mux.v tb_ternary_operator_mux.v
+./a.out
+gtkwave tb_ternary_operator_mux.vcd
+```
+
+![8 2](https://github.com/user-attachments/assets/71d48e0e-780e-4dd6-8ce8-0d1f0816f8d2)
+
+
+#### Synthesis: 
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog ternary_operator_mux.v
+```
+Synthesize the Design
+```
+synth -top ternary_operator_mux
+```
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+
+![8 3](https://github.com/user-attachments/assets/a1a2b22b-7b23-4658-9b54-d8012bdcae34)
+
+To see the Netlist
+```
+write_verilog -noattr ternary_operator_mux_net.v
+!gvim ternary_operator_mux_net.v
+```
+
+![8 4](https://github.com/user-attachments/assets/4cd08852-37e3-4ccf-8bcc-2d8740cdadd3)
+
+#### Gate Level Synthesis (GLS)
+
+##### Command steps :
+
+Go to the required directory
+```
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v ternary_operator_mux_net.v tb_ternary_operator_mux.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_ternary_operator_mux.vcd
+```
+Below is the Snapshot of the above commands and the resultant Waveforms:
+
+![8 5](https://github.com/user-attachments/assets/82f920b2-6478-4759-8f71-a5ea6d58b167)
+
+These waveforms correspond to the GATE LEVEL SYNTHESIS for the Ternary Operator MUX.
+
+
+- ### Example 2: Design of a 2:1 Bad MUX
+
+Verilog code:
+```
+module bad_mux(input i0, input i1, input sel, output reg y);
+	always@(sel)
+	begin
+		if(sel)
+			y <= i1;
+		else
+			y <= i0;
+	end
+endmodule
+```
+Command steps for Simulation:
+
+```
+iverilog bad_mux.v tb_bad_mux.v
+./a.out
+gtkwave tb_bad_mux.vcd
+```
+
+![8 6](https://github.com/user-attachments/assets/7364da41-eda0-4255-8d6c-32ecdc3a6f07)
+
+From the waveform it can be observed that the output y changes only when there is a change in select line, completely ignoring the change in i0 and i1, which should also change the output y. Thus, this design is that of a bad MUX.
+
+#### Synthesis: 
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog bad_mux.v
+```
+Synthesize the Design
+```
+synth -top bad_mux
+```
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+
+![8 7](https://github.com/user-attachments/assets/aa8e8bb1-2a08-4a9e-87cb-7f9d095158b8)
+
+
+To see the Netlist
+```
+write_verilog -noattr bad_mux_net.v
+!gvim bad_mux_net.v
+```
+
+![8 8](https://github.com/user-attachments/assets/8112e953-0364-468e-9217-4b767db01e26)
+
+From the waveform it can be observed that the output y changes only when there is a change in select line, completely ignoring the change in i0 and i1, which should also change the output y. Thus, this design is that of a bad MUX.
+
+
+#### Gate Level Synthesis (GLS)
+
+##### Command steps :
+
+Go to the required directory
+```
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v bad_mux.v tb_bad_mux.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_bad_mux.vcd
+```
+Below is the Snapshot of the above commands and the resultant Waveforms:
+
+![8 9](https://github.com/user-attachments/assets/a2b59280-1910-4b91-aa7f-0cc1e2394b40)
+
+These waveforms correspond to the GATE LEVEL SYNTHESIS for the Bad MUX.
+
+
+
+- ### Example 3: Blocking Caveat
+
+
+Verilog code:
+```
+module blocking_caveat(input a, input b, input c, output reg d);
+	reg x;
+
+	always@(*)
+	begin
+		d = x & c;
+		x = a | b;
+	end
+endmodule
+```
+Command steps for Simulation:
+
+```
+iverilog blocking_caveat.v tb_blocking_caveat.v
+./a.out
+gtkwave tb_blocking_caveat.vcd
+```
+
+![8 10](https://github.com/user-attachments/assets/ab22f0c2-befc-4ba6-a513-1b4457d712b7)
+
+
+As depicted, when A and B go zero, the OR gate output should be zero (X equal to zero), and the AND gate output should also be zero (same as D output). But, the AND gate input of X takes the previous value of A|B equal to one, based on the design created by the blocking statement, hence the discrepancy in the output.
+
+
+#### Synthesis: 
+
+This will invoke/start the yosys
+```
+yosys       
+```
+Read the library 
+```
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+Read the design verilog files
+```
+read_verilog blocking_caveat.v
+```
+Synthesize the Design
+```
+synth -top blocking_caveat
+```
+
+Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![8 11](https://github.com/user-attachments/assets/203389e6-0374-41d6-b98f-fd6ae21a34f9)
+
+
+
+To see the Netlist
+```
+write_verilog -noattr blocking_caveat_net.v
+!gvim blocking_caveat_net.v
+```
+![8 12](https://github.com/user-attachments/assets/3f888c1b-3b1b-498a-9920-a33531cea4c1)
+
+
+
+
+#### Gate Level Synthesis (GLS)
+
+##### Command steps :
+
+Go to the required directory
+```
+sudo -i
+cd ~
+cd /home/chandra-shekhar-jha/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+```
+We just need to put few commands as stated below in order to see the waveforms.
+
+```
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v blocking_caveat_net.v tb_blocking_caveat.v
+ls
+```
+After giving the above command the IVerilog stores the output as ' a.out '
+
+Now let's execute the ' a.out ' file and observe the waveforms.
+
+```
+./a.out
+gtkwave tb_blocking_caveat.vcd
+```
+Below is the Snapshot of the above commands and the resultant Waveforms:
+
+![8 14](https://github.com/user-attachments/assets/a0249fde-a9c6-4651-be4f-4d5f87f53dd1)
+
+These waveforms correspond to the GATE LEVEL SYNTHESIS for the Blocking Caveat.
+
+
+</details>
