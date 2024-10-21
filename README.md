@@ -2723,7 +2723,7 @@ show
 <details>
       <summary> LAB 7 (Day 3) : Optimization of various Sequential Designs </summary>
       
-## LAB 6 - AIM : Optimization of various Sequential Designs 
+## LAB 7 - AIM : Optimization of various Sequential Designs 
 
 ### Optimization of various Sequential Designs 
 
