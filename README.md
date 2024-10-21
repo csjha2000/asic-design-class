@@ -8,7 +8,7 @@
 - **TASK 7:** [Building a 5-stage pipelined RISC-V processor.](#task-7)
 - **TASK 8:** [RISC-V Pre synthesis simulation using IVerilog and GTKWave.](#task-8)
 - **TASK 9:** [RISC-V Pre synthesis Analog simulation using IVerilog and GTKWave.](#task-9)
-- **TASK 10:** [RTL design using Verilog with SKY130 Technology.](#task-10)
+- **TASK 10:** [RTL design using Verilog with SKY130 Technology Workshop.](#task-10)
       
   
 
@@ -3402,9 +3402,9 @@ show
 
 
 <details>
-      <summary> LAB 8 (Day 4) : GLS, Synthesis-Simulation mismatch </summary>
+      <summary> LAB 8 (Day 4) : GLS, Synthesis-Simulation mismatch, non - blocking and blocking statements. </summary>
       
-## LAB 8 - AIM : GLS, Synthesis-Simulation mismatch for non - blocking statements.
+## LAB 8 - AIM : GLS, Synthesis-Simulation mismatch, non - blocking and blocking statements.
 
 #### Gate Level Simulation (GLS) 
 
