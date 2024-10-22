@@ -2317,6 +2317,59 @@ show
 ![6 6](https://github.com/user-attachments/assets/6e8fac8e-98c9-4ee8-97a1-57ee3fc667ca)
 
 
+
+
+
+## Multiplication by 2: 
+
+This tutorial, we get to know that specific multiplier hardware is not required for multiplication of a number by 2. It can simply be achieved by concatenating the number itself with a zero in the LSB. 
+VERILOG CODE :
+```
+//Design
+module mul2(input [2:0]a, output [3:0]y);
+	assign y=a*2;
+endmodule
+```
+Command Steps:
+```
+1. yosys
+2. read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+3. read_verilog mult_2.v
+4. synth -top mul2
+5. abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+6. show
+7. write_verilog -noattr mul2_net.v
+8. gvim mul2_net.v
+```
+![Screenshot from 2024-10-22 11-04-41](https://github.com/user-attachments/assets/8c919235-3c14-48f0-ac96-a3d85d564560)
+
+![Screenshot from 2024-10-22 11-06-16](https://github.com/user-attachments/assets/44748cf4-4fa3-44b8-a7ea-6669336fa18b)
+
+![Screenshot from 2024-10-22 11-07-18](https://github.com/user-attachments/assets/958caee6-736d-4a6d-b7db-25252595e407)
+
+
+## Multiplication by 9:
+This tutorial, we get to know that specific multiplier hardware is not required for multiplication of a number by 9. It can simply be achieved by concatenating the number with itself.
+
+```
+//Design
+module mul8(input [2:0]a, output [5:0]y);
+	assign y=a*9;
+endmodule
+```
+Command Steps:
+```
+1. yosys
+2. read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+3. read_verilog mult_8.v
+4. synth -top mul8
+5. abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+6. show
+7. write_verilog -noattr mul8_net.v
+8. !vim mul8_net.v
+```
+![Screenshot from 2024-10-22 11-13-50](https://github.com/user-attachments/assets/b4a9698d-c792-4dde-a059-234c210254b9)
+
 </details>
 
 
