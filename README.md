@@ -3817,8 +3817,20 @@ synth -top rvmyth
 ```
 ![new1](https://github.com/user-attachments/assets/270f0624-4c87-48d4-8d5f-bc126c16c323)
 
-
 Now Generate the Netlist
+```
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+```
+
+Now let's Create a Graphical Representation 
+
+```
+show
+```
+![Screenshot 2024-10-23 225930](https://github.com/user-attachments/assets/611443cb-d750-409e-88c9-3d6d1fc0053a)
+
+
+To View the Netlist
 ```
 write_verilog -noattr rvmyth.v
 !gvim rvmyth.v
