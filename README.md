@@ -3820,7 +3820,6 @@ synth -top rvmyth
 
 Now Generate the Netlist
 ```
-abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 write_verilog -noattr rvmyth.v
 !gvim rvmyth.v
 exit
@@ -3837,6 +3836,8 @@ ls
 gtkwave dump.vcd
 ```
 ![Screenshot from 2024-10-23 20-09-56](https://github.com/user-attachments/assets/c6db6f2a-6a7b-4827-9416-fbabba5ea513)
+
+![Untitled](https://github.com/user-attachments/assets/f471cd9f-fb86-4801-89b2-a7265eca0b47)
 
 
 # Functional Simulations
@@ -3855,6 +3856,7 @@ gtkwave pre_synth_sim.vcd
 
 # COMPARISON of Functionality vs Synthesized output waveform 
 
+![Untitled0](https://github.com/user-attachments/assets/67a35d2e-75f0-4935-b47c-7f957c13485e)
 
 
 
