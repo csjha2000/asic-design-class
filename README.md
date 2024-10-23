@@ -3840,7 +3840,7 @@ gtkwave dump.vcd
 ![Untitled](https://github.com/user-attachments/assets/f471cd9f-fb86-4801-89b2-a7265eca0b47)
 
 
-# Functional Simulations
+# Functional Simulations ( Previously done in TASK-9 )
 
  ### Command Steps :
  ```
@@ -3858,7 +3858,7 @@ gtkwave pre_synth_sim.vcd
 
 ![Untitled0](https://github.com/user-attachments/assets/67a35d2e-75f0-4935-b47c-7f957c13485e)
 
-
+## CONCLUSION : The Functionality vs Synthesized output waveform matches.  
 
 
 
