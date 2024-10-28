@@ -9,7 +9,8 @@
 - **TASK 8:** [RISC-V Pre synthesis simulation using IVerilog and GTKWave.](#task-8)
 - **TASK 9:** [RISC-V Pre synthesis Analog simulation using IVerilog and GTKWave.](#task-9)
 - **TASK 10:** [RTL design using Verilog with SKY130 Technology Workshop.](#task-10)
-- **TASK 11:** [Synthesize RISC-V and compare output with functional simulations.](#task-10)
+- **TASK 11:** [Synthesize RISC-V and compare output with functional simulations.](#task-11)
+- **TASK 12:** [Static Timing Analysis for Synthesized Risc-V Core using OpenSTA. ](#task-12)
       
   
 
@@ -3872,12 +3873,6 @@ gtkwave pre_synth_sim.vcd
 
 ## CONCLUSION : The Functionality vs Synthesized output waveform matches.  
 
-
-
-
-
-
-
 </details>
 
 
@@ -3885,5 +3880,101 @@ gtkwave pre_synth_sim.vcd
 
 
 
+# TASK 12      
+( 24/10/2024 )
+
+<details>
+       <summary>  Static Timing Analysis for Synthesized Risc-V Core using OpenSTA </summary>
+
+## AIM :  Static Timing Analysis for Synthesized Risc-V Core using OpenSTA  </summary>
+
+### What is STA?
+Static Timing Analysis (STA) is a method used in digital circuit design to verify the timing performance of a circuit without requiring dynamic simulation. It checks whether the circuit meets its timing constraints by analyzing the timing paths in the design. Here are some key aspects of STA:
+
+1. Timing Paths: STA evaluates all possible paths through a circuit from input to output, taking into account the propagation delays of gates and interconnects.
+2. Setup and Hold Times: It checks for setup and hold time violations. The setup time is the minimum time before the clock edge that the input data must be stable, while the hold time is the minimum time after the clock edge that the data must remain stable.
+3. Clock Constraints: STA incorporates clock definitions, including the clock frequency, period, and any variations (like skew or jitter).
+4. Worst-case Scenario: STA assumes worst-case conditions for delay values (like maximum load, temperature, and voltage) to ensure that the circuit will perform correctly under all expected operating conditions.
+5. Tools: There are various tools for performing STA, such as Synopsys PrimeTime, Cadence Tempus, and others, which automate the process and provide detailed reports on timing violations.
+Overall, STA is crucial for ensuring that digital circuits operate reliably at the intended speeds and for identifying potential timing issues early in the design process.
+### Why STA is performed ?
+Static Timing Analysis (STA) is performed for several critical reasons in digital circuit design:
+1. Timing Verification: STA ensures that the design meets its specified timing constraints. It verifies that data signals can propagate through the circuit within the required time limits, ensuring that outputs are stable and valid when needed.
+2. Identify Timing Violations: It helps identify setup and hold time violations, which can lead to incorrect operation of flip-flops and other sequential elements. Detecting these violations is crucial to ensure the reliability of the circuit.
+3. Performance Optimization: By analyzing the timing paths, designers can identify critical paths that limit the maximum operating frequency. This information can be used to optimize the design by resizing gates, adjusting the layout, or modifying the clock strategy.
+4. Early Detection of Issues: STA allows for early detection of timing issues during the design process, reducing the risk of costly iterations and revisions in later stages, such as post-layout or during fabrication.
+5. Power Consumption Analysis: Timing analysis can also help in understanding the impact of clock frequency on power consumption. By ensuring that the design runs at optimal speeds, designers can balance performance and power efficiency.
+6. Design Validation: STA provides a level of assurance that the design will work correctly under the specified operating conditions. It validates the design against its intended specifications and requirements.
+7. Automation: STA tools can automatically analyze complex designs, making it more efficient than traditional dynamic simulations, especially for large-scale integrated circuits.
+8. Support for Variability: STA can incorporate variations in manufacturing processes, temperature, and voltage (PVT variations) to ensure robust performance across different conditions.
+In summary, STA is essential for ensuring the functionality, reliability, and performance of digital circuits, enabling designers to create high-quality, efficient designs.
+### What is reg2reg Path ?
+A reg2reg path (register-to-register path) refers to a timing path in a digital circuit that connects two sequential elements, specifically flip-flops or registers. This path is crucial in the context of Static Timing Analysis (STA) because it represents the flow of data from one register to another through combinational logic.
+Reg2reg paths are essential for ensuring proper data flow and synchronization in digital circuits, especially in designs with pipelining or sequential operations. Analyzing these paths helps in verifying that the data processing occurs correctly across clock cycles, thereby ensuring the overall functionality and reliability of the circuit.
+#### Key characteristics of reg2reg Path
+1. **Sequential Logic**: Reg2reg paths are part of sequential circuits where data is stored in registers and passed from one register to another after being processed by combinational logic.
+2. **Setup and Hold Timing**:
+   * **Hold Time**: Reg2reg paths are analyzed for setup time constraints to ensure that the data output from the first register (FF1) arrives at the second register (FF2) before the clock edge that triggers FF2.
+   * **Hold Time**: These paths are also evaluated for hold time constraints to ensure that the data remains stable at the input of FF2 for a specified period after the clock edge that triggers FF1.
+3. **Combinational Logic Delay**: The timing analysis of a reg2reg path includes the propagation delay through the combinational logic that connects the two registers. This delay can vary based on the logic elements and their configuration.
+4. **Critical Paths**: Reg2reg paths can often be critical paths if they take longer than other paths in the design, which can limit the maximum operating frequency of the circuit.
+5. **Path Analysis**: STA tools evaluate reg2reg paths to check for timing violations, allowing designers to optimize the circuit by adjusting the logic, resizing gates, or modifying the layout.
+6. **Clock Domain Crossing**: If the two registers belong to different clock domains, additional considerations for metastability and synchronization are needed, which complicates the reg2reg timing analysis.
+### What is clk2reg Path ?
+A clk2reg path (clock-to-register path) refers to a timing path in a digital circuit that connects the clock signal to a register (flip-flop). This path is crucial for ensuring that the register operates correctly in response to clock events. Here are the key aspects of clk2reg paths:
+1. **Clock Signal Propagation**: The clk2reg path represents the time it takes for the clock signal to reach the register from the clock source, including any delays introduced by clock buffers or routing.
+2. **Setup Timing**: In the context of setup timing analysis, the clk2reg path is important for determining when the data signal must arrive at the register relative to the clock edge. The analysis ensures that the clock arrives at the register before the data input becomes stable, meeting the setup time requirement.
+3. **Clock Delay**: This path is evaluated for the delay introduced by any clock distribution elements, such as buffers and inverters, that may be part of the clock tree. The total delay impacts the timing of when the register captures the input data.
+4. **Critical Paths**: A clk2reg path can become a critical path if the delay through this path is significant enough to affect the maximum frequency of operation for the circuit.
+5. **Hold Timing**: Although clk2reg paths are primarily associated with setup time analysis, they can also be relevant for hold time analysis, especially in cases where the clock signal may have some jitter or variations that could affect timing margins.
+6. **Clock Diagram Crossing**: If the register is part of a different clock domain, the clk2reg analysis will also involve considerations for synchronization and potential metastability issues.
+### STA for the synthesized RISC-V Core
+Here, in this activity we will be generating setup and hold timing reports for our Synthesized RISC-V Core module.
 
 
+Following are the commands to generate the reports,
+
+```
+cd OpenSTA/app
+./sta
+
+read_liberty /home/chandra-shekhar-jha/VLSI/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog /home/chandra-shekhar-jha/OpenSTA/lab/riscv_netlist.v
+link_design rvmyth
+
+create_clock -name clk -period 9.65 [get_ports clk]
+set_clock_uncertainty [expr 0.05 * 9.65] -setup [get_clocks clk]
+set_clock_uncertainty [expr 0.08 * 9.65] -hold [get_clocks clk]
+set_clock_transition [expr 0.05 * 9.65] [get_clocks clk]
+set_input_transition [expr 0.08 * 9.65] [all_inputs]
+```
+
+
+- The clock period has been specified as 9.65 ns.
+- The setup uncertainity is 5% of the defined clock period
+- The clock transition is defined as 5% of the defined clock period
+- The hold uncertainity is set as 8% of the clock period
+- The input data transition is set as 8% of the defined clock period
+
+
+![111111111](https://github.com/user-attachments/assets/62e51b76-0db8-40bb-b65c-d977c3623219)
+
+
+```
+report_checks -path_delay max
+
+```
+In the below screenshot, we can observe the timing report for a reg2reg max path,
+![Screenshot from 2024-10-28 22-52-46](https://github.com/user-attachments/assets/74a01fe3-20ac-4e66-a600-28f45697c7f2)
+
+
+```
+report_checks -path_delay min
+```
+Below screenshot shows the reg2reg min path report,
+
+![22222222222](https://github.com/user-attachments/assets/b07578e9-26b4-4b3f-b814-34f73ad1c422)
+
+The max path report is for the Setup Slack and the min path report is for the Hold Slack.
+
+</details>
