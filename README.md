@@ -4002,7 +4002,7 @@ The max path report is for the Setup Slack and the min path report is for the Ho
 
 
 # TASK 12      
-( 26/10/2024 )
+( 29/10/2024 )
 
 <details>
        <summary>  PVT Corner Analysis for Synthesized VSDBabySoC using OpenSTA </summary>
