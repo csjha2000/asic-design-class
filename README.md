@@ -3938,9 +3938,14 @@ Following are the commands to generate the reports,
 cd OpenSTA/app
 ./sta
 
-read_liberty /home/chandra-shekhar-jha/VLSI/sky130_fd_sc_hd__tt_025C_1v80.lib
-read_verilog /home/chandra-shekhar-jha/OpenSTA/lab/riscv_netlist.v
-link_design rvmyth
+read_liberty -min ./lib/sta/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_liberty -max ./lib/sta/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_liberty -min ./lib/avsdpll.lib
+read_liberty -max ./lib/avsdpll.lib
+read_liberty -min ./lib/avsddac.lib
+read_liberty -max ./lib/avsddac.lib
+read_verilog ./src/module/vsdbabysoc_synth.v
+link_design vsdbabysoc
 
 create_clock -name clk -period 9.65 [get_ports clk]
 set_clock_uncertainty [expr 0.05 * 9.65] -setup [get_clocks clk]
@@ -3958,22 +3963,6 @@ set_input_transition [expr 0.08 * 9.65] [all_inputs]
 
 
 
-To execute the OpenSTA and obtain the timing reports, run the below command,
-```
-sta scripts/sta.conf
-```
-Following are contents of the sta.conf file,
-```
-read_liberty -min ./lib/sta/sky130_fd_sc_hd__tt_025C_1v80.lib
-read_liberty -max ./lib/sta/sky130_fd_sc_hd__tt_025C_1v80.lib
-read_liberty -min ./lib/avsdpll.lib
-read_liberty -max ./lib/avsdpll.lib
-read_liberty -min ./lib/avsddac.lib
-read_liberty -max ./lib/avsddac.lib
-read_verilog ./src/module/vsdbabysoc_synth.v
-link_design vsdbabysoc
-read_sdc ./src/sdc/sta_post_synth.sdc
-```
 
 ![111111111](https://github.com/user-attachments/assets/62e51b76-0db8-40bb-b65c-d977c3623219)
 
