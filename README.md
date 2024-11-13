@@ -4879,3 +4879,436 @@ drc why
 
 
 
+
+
+
+
+
+
+
+<details>
+       <summary>DAY 4 : Pre-layout timing analysis and importance of good clock tree </summary>
+
+
+## AIM : Pre-layout timing analysis and importance of good clock tree
+
+Commands to extract `tracks.info` file:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+cd ../../pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd/
+less tracks.info
+```
+![image](https://github.com/user-attachments/assets/cef5e058-bbe3-4d1b-b1d5-cbaf47d04d59)
+
+Commands to open the custom inverter layout
+```
+
+cd Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
+magic -T sky130A.tech sky130_inv.mag &
+```
+
+Commands for tkcon window to set grid as tracks of locali layer
+
+```
+help grid
+grid 0.46um 0.34um 0.23um 0.17um
+```
+
+![image](https://github.com/user-attachments/assets/879860f3-b355-4209-a1e8-ffc0d4a01715)
+
+
+The grids show where the routing for the local-interconnet layer can only happen, the distance of the grid lines are the required pitch of the wire. Below, we can see that the guidelines are satisfied:
+
+![image](https://github.com/user-attachments/assets/c3b753ec-85e4-413e-9d22-f6a8ebc584d4)
+
+
+Now, save it by giving a custon name
+
+```
+save sky130_CHA_inv.mag
+```
+
+![image](https://github.com/user-attachments/assets/a3044280-447f-4a9f-ac66-b4ba18e16c1c)
+
+
+Now, open it by using the following commands:
+
+```
+magic -T sky130A.tech sky130_CHA_inv.mag &
+```
+
+![image](https://github.com/user-attachments/assets/550232de-86c5-407b-aa0f-1aa077d75850)
+
+
+Now, type the following command in tkcon window:
+
+```
+lef write
+```
+![image](https://github.com/user-attachments/assets/5ba7c908-f8f4-4707-a4fa-e8d34df2ea09)
+
+
+![image](https://github.com/user-attachments/assets/345cc568-6055-46fe-8c29-e4dbd0985246)
+
+![image](https://github.com/user-attachments/assets/a6f008af-4840-4b3c-8463-4001781c3f6f)
+
+Modify config.tcl:
+
+```
+# Design
+set ::env(DESIGN_NAME) "picorv32a"
+set ::env(VERILOG_FILES) "./designs/picorv32a/src/picorv32a.v"
+set ::env(SDC_FILES) "./designs/picorv32a/src/picorv32a.sdc"
+set ::env(CLOCK_PERIOD) "5.000"
+set ::env(CLOCK_PORT) "clk"
+set ::env(CLOCK_NET) $::env(CLOCK_PORT) 
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib "
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib "
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib"
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]   ## this is the new line added to the existing config.tcl file
+set filename $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/$::env(PDK)_$::env(STD_CELL_LIBRARY)_config.tcl
+if { [file exists $filename] == 1 } {
+  source $filename
+}
+```
+![image](https://github.com/user-attachments/assets/1da44ab2-acb4-47e7-976e-6ef2e6bd5aab)
+
+Now, run openlane flow synthesis:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+```
+
+```
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+run_synthesis
+```
+
+![image](https://github.com/user-attachments/assets/9170d63d-fe84-4e25-a1bd-df41cd9af1aa)
+
+
+![image](https://github.com/user-attachments/assets/a93a8b24-8b2d-46e6-8d07-e40c5492d949)
+
+
+
+![image](https://github.com/user-attachments/assets/18df35a5-7c4f-4f36-b1e8-03e75893e739)
+
+
+**Delay Tables**
+
+Delay plays a crucial role in cell timing, impacted by input transition and output load. Cells of the same type can have different delays depending on wire length due to resistance and capacitance variations. To manage this, "delay tables" are created, using 2D arrays with input slew and load capacitance for each buffer size as timing models. Algorithms compute buffer delays from these tables, interpolating where exact data isn’t available to estimate delays accurately, preserving signal integrity across varying load conditions.
+
+![image](https://github.com/user-attachments/assets/095a59e1-158c-4870-88e3-b73cb3a3692c)
+
+Fixing slack:
+
+```
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a -tag 24-03_10-03 -overwrite
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+echo $::env(SYNTH_STRATEGY)
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+echo $::env(SYNTH_BUFFERING
+echo $::env(SYNTH_SIZING)
+set ::env(SYNTH_SIZING) 1
+echo $::env(SYNTH_DRIVING_CELL)
+run_synthesis
+```
+![image](https://github.com/user-attachments/assets/fda6e1ec-a9fd-49bc-9818-416a14f53834)
+
+![image](https://github.com/user-attachments/assets/523691b9-3219-4c19-9835-00d796be9b73)
+
+![image](https://github.com/user-attachments/assets/2a2e5394-6fb9-4e4d-a799-82d1a34e4d89)
+
+![image](https://github.com/user-attachments/assets/5487ee4d-27ee-4159-bfbf-584f794a6376)
+
+
+
+
+
+Now, run floorplan
+
+```
+run_floorplan
+```
+
+![image](https://github.com/user-attachments/assets/4a06019a-8c4b-4866-ad6c-47b6f3f7aebc)
+
+
+![image](https://github.com/user-attachments/assets/44eebd5e-be74-4cbc-9a92-de0c45e31c3e)
+
+Since we are facing unexpected un-explainable error while using run_floorplan command, we can instead use the following set of commands available based on information from `Desktop/work/tools/openlane_working_dir/openlane/scripts/tcl_commands/floorplan.tcl` and also based on Floorplan Commands section in `Desktop/work/tools/openlane_working_dir/openlane/docs/source/OpenLANE_commands.md`
+
+```
+init_floorplan
+place_io
+tap_decap_or
+```
+
+Now, do placement
+
+```
+run_placement
+```
+
+![image](https://github.com/user-attachments/assets/978e67f5-9b5e-4cc2-b76d-9b5074806d50)
+
+
+![image](https://github.com/user-attachments/assets/6136d8c2-9e17-4c34-8905-c090eddd89ed)
+
+
+Now, open a new terminal and run the below commands to load placement def in magic
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/24-03_10-03/results/placement/
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
+
+![image](https://github.com/user-attachments/assets/908be0e4-0e37-448e-be80-abf188cb25ff)
+
+
+
+
+**Timing analysis with ideal clocks using openSTA**
+
+Pre-layout STA will include effects of clock buffers and net-delay due to RC parasitics (wire delay will be derived from PDK library wire model).
+
+![image](https://github.com/user-attachments/assets/a74af227-70dd-4812-930d-b6e9e787a27f)
+
+Since we are getting 0 wns after improved timing run, we will be doing the timing analysis on initial run of synthesis which has lots of violations and no parameters added to improve timing.
+
+Commands to invoke the OpenLANE flow include new lef and perform synthesis:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+./flow.tcl -interactive
+package require openlane 0.9set
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_SIZING) 1
+run_synthesis
+```
+
+Go, to `Desktop/work/tools/openlane_working_dir/openlane` and create a file `pre_sta.conf`. The contents of the file are:
+
+```
+set_cmd_units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -distance um
+read_liberty -max /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib
+read_liberty -min /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib
+read_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/12-11_13-40/results/synthesis/picorv32a.synthesis.v
+link_design picorv32a
+read_sdc /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/src/my_base.sdc
+report_checks -path_delay min_max -fields {slew trans net cap input_pin}
+report_tns
+report_wns
+```
+
+Contents of `my_base.sdc`:
+
+```
+set ::env(CLOCK_PORT) clk
+set ::env(CLOCK_PERIOD) 12.000
+set ::env(SYNTH_DRIVING_CELL) sky130_fd_sc_hd__inv_8
+set ::env(SYNTH_DRIVING_CELL_PIN) Y
+set ::env(SYNTH_CAP_LOAD) 17.65
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set IO_PCT  0.2
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace $all_inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+# correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+set_load  $cap_load [all_outputs]
+```
+
+Commands to run STA:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane
+sta pre_sta.conf
+```
+
+![image](https://github.com/user-attachments/assets/ab908256-ab8f-444d-9121-baf2ded209be)
+
+
+![image](https://github.com/user-attachments/assets/33940dd4-5a07-47d5-92e4-aab309c2e9ac)
+
+
+
+
+Clock Tree Synthesis (CTS) techniques vary based on design needs:
+
+- Balanced Tree CTS: Uses a balanced binary-like tree for equal path lengths, minimizing clock skew but with moderate power efficiency.
+- H-tree CTS: Employs an "H"-shaped structure, good for large areas and power efficiency.
+
+   ![image](https://github.com/user-attachments/assets/d1b13f19-a87f-41b6-8f29-a4e00a8e7216)
+
+- Star CTS: Distributes the clock from a central point, minimizing skew but requiring more buffers near the source.
+- Global-Local CTS: Combines star and tree topologies, with a global tree for clock domains and local trees within domains, balancing global and local timing.
+- Mesh CTS: Uses a grid pattern ideal for structured designs, balancing simplicity and skew.
+- Adaptive CTS: Dynamically adjusts based on timing and congestion, offering flexibility but with added complexity.
+
+**Crosstalk**
+
+Crosstalk is interference from overlapping electromagnetic fields between adjacent circuits, causing unwanted signals. In VLSI, it can lead to data corruption, timing issues, and higher power consumption. Mitigation strategies include optimized layout and routing, shielding, and clock gating to reduce dynamic power and minimize crosstalk effects.
+
+![image](https://github.com/user-attachments/assets/21df4ac0-57aa-492e-adfa-7e04ce385680)
+
+**Clock Net Shielding**
+
+Clock net shielding prevents glitches by isolating the clock network, using shields connected to VDD or GND that don’t switch. It reduces interference by isolating clocks from other signals, often with dedicated routing layers and clock buffers. Additionally, clock domain isolation helps prevent cross-domain interference, avoiding metastability and maintaining synchronization.
+
+![image](https://github.com/user-attachments/assets/bf85dd84-dc29-4962-877a-ce4f535bab2c)
+
+Now to insert this updated netlist to PnR flow and we can use write_verilog and overwrite the synthesis netlist but before that we are going to make a copy of the old old netlist:
+
+Run the following commands:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/12-11_13-40/results/synthesis/
+ls
+cp picorv32a.synthesis.v picorv32a.synthesis_old.v
+ls
+```
+
+Commands to write verilog:
+
+```
+write_verilog /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/12-11_13-40/results/synthesis/picorv32a.synthesis.v
+exit
+```
+Verified that the netlist is overwritten
+
+![image](https://github.com/user-attachments/assets/80767a72-9618-48e8-8d34-b18f6c9a0b1e)
+
+
+
+
+
+Now, run the following commands:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+./flow.tcl -interactive
+prep -design picorv32a -tag 12-11_13-40 -overwrite
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+set ::env(SYNTH_SIZING) 1
+run_synthesis
+init_floorplan
+place_io
+tap_decap_or
+run_placement
+run_cts
+```
+![image](https://github.com/user-attachments/assets/61fec8bb-4ba8-40b4-a5e7-df3af2b84b7c)
+
+
+![image](https://github.com/user-attachments/assets/f1521010-6aa6-4eae-9b30-2710c93b854b)
+
+
+The cts is succesfull as shown below:
+
+![image](https://github.com/user-attachments/assets/d5446bf8-1ff3-4003-b5a1-83aead356fca)
+
+
+![image](https://github.com/user-attachments/assets/3dc8e3e1-b853-46e9-816d-e71d66e6c4f4)
+
+
+**Setup timing analysis using real clocks**
+
+A real clock in timing analysis accounts for practical factors like clock skew and clock jitter. Clock skew is the difference in arrival times of the clock signal at different parts of the circuit due to physical delays, which affects setup and hold timing margins. Clock jitter is the variability in the clock period caused by power, temperature, and noise fluctuations, leading to uncertainty in clock edge timing. Both factors are crucial for accurate timing analysis, ensuring the design performs reliably in real-world conditions.
+
+![image](https://github.com/user-attachments/assets/3526c927-e1a9-445a-9dae-22bc7e0446c7)
+
+![image](https://github.com/user-attachments/assets/0c766405-5f9b-4700-a4cd-6fd19e9ea6cc)
+
+Now, enter the following commands for Post-CTS OpenROAD timing analysis:
+
+```
+openroad
+read_lef /openLANE_flow/designs/picorv32a/runs/12-11_13-40/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/12-11_13-40/results/cts/picorv32a.cts.def
+write_db pico_cts.db
+read_db pico_cts.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/12-11_13-40/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+exit
+```
+
+![image](https://github.com/user-attachments/assets/abd617e3-654d-4e3e-832c-d338b0568ec1)
+
+
+![image](https://github.com/user-attachments/assets/b3cd1478-55ba-4c6b-b669-74f26536f253)
+
+![image](https://github.com/user-attachments/assets/a690f083-68eb-4e17-af67-6ba962b260c8)
+
+
+Now, enter the following commands for exploring post-CTS OpenROAD timing analysis by removing 'sky130_fd_sc_hd__clkbuf_1' cell from clock buffer list variable 'CTS_CLK_BUFFER_LIST':
+
+```
+echo $::env(CTS_CLK_BUFFER_LIST)
+set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
+echo $::env(CTS_CLK_BUFFER_LIST)
+echo $::env(CURRENT_DEF)
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/25-03_18-52/results/placement/picorv32a.placement.def
+run_cts
+echo $::env(CTS_CLK_BUFFER_LIST)
+openroad
+read_lef /openLANE_flow/designs/picorv32a/runs/25-03_18-52/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/25-03_18-52/results/cts/picorv32a.cts.def
+write_db pico_cts1.db
+read_db pico_cts.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/25-03_18-52/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+report_checks -path_delay min_max -fields {slew transd net cap input_pins} -format full_clock_expanded -digits 4
+report_clock_skew -hold
+report_clock_skew -setup
+exit
+echo $::env(CTS_CLK_BUFFER_LIST)
+set ::env(CTS_CLK_BUFFER_LIST) [linsert $::env(CTS_CLK_BUFFER_LIST) 0 sky130_fd_sc_hd__clkbuf_1]
+echo $::env(CTS_CLK_BUFFER_LIST)
+```
+
+![image](https://github.com/user-attachments/assets/f9167d26-747b-4c5d-bcd8-39e8bc353451)
+
+
+![image](https://github.com/user-attachments/assets/a1f03b56-a87d-4a41-a0ea-1da6d7a76dea)
+
+
+![image](https://github.com/user-attachments/assets/79404c79-913c-4ac9-9136-c570762b8838)
+
+
+</details>
