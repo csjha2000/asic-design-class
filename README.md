@@ -5312,3 +5312,185 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 
 
 </details>
+
+
+<details>
+       <summary> DAY 5 : Final steps for RTL2GDS using tritonRoute and openSTA </summary>
+
+
+### AIM- Final steps for RTL2GDS using tritonRoute and openSTA
+
+**Maze Routing and Lee's algorithm**
+
+Routing establishes a physical connection between pins, and algorithms like Maze Routing (e.g., the Lee algorithm) are used to find efficient paths on a routing grid. The Lee algorithm starts at a source pin, assigning incremental labels to neighboring cells until reaching the target pin, prioritizing L-shaped routes and using zigzag paths if needed. While effective for finding the shortest path between two pins, the Lee algorithm can be slow for large-scale designs, prompting the use of faster alternatives for handling complex routing tasks.
+
+![image](https://github.com/user-attachments/assets/9016ae8d-1a9f-4b22-ba5f-a445af7bc92d)
+
+**Design Rule Check**
+
+Command to generate Power Distribution Network (PDN):
+
+```
+# Change directory to openlane flow directory
+cd Desktop/work/tools/openlane_working_dir/openlane
+
+# alias docker='docker run -it -v $(pwd):/openLANE_flow -v $PDK_ROOT:$PDK_ROOT -e PDK_ROOT=$PDK_ROOT -u $(id -u $USER):$(id -g $USER) efabless/openlane:v0.21'
+# Since we have aliased the long command to 'docker' we can invoke the OpenLANE flow docker sub-system by just running this command
+docker
+# Now that we have entered the OpenLANE flow contained docker sub-system we can invoke the OpenLANE flow in the Interactive mode using the following command
+./flow.tcl -interactive
+
+# Now that OpenLANE flow is open we have to input the required packages for proper functionality of the OpenLANE flow
+package require openlane 0.9
+
+# Now the OpenLANE flow is ready to run any design and initially we have to prep the design creating some necessary files and directories for running a specific design which in our case is 'picorv32a'
+prep -design picorv32a
+
+# Addiitional commands to include newly added lef to openlane flow merged.lef
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+
+# Command to set new value for SYNTH_STRATEGY
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+
+# Command to set new value for SYNTH_SIZING
+set ::env(SYNTH_SIZING) 1
+
+# Now that the design is prepped and ready, we can run synthesis using following command
+run_synthesis
+
+# Following commands are alltogather sourced in "run_floorplan" command
+init_floorplan
+place_io
+tap_decap_or
+
+# Now we are ready to run placement
+run_placement
+
+# Incase getting error
+unset ::env(LIB_CTS)
+
+# With placement done we are now ready to run CTS
+run_cts
+
+# Now that CTS is done we can do power distribution network
+gen_pdn
+
+```
+![image](https://github.com/user-attachments/assets/e27f4721-943e-46d8-b5bf-1f0639f2f72d)
+
+
+![image](https://github.com/user-attachments/assets/11a3cad7-c2eb-4a4c-9c5f-cfcfa5f8e567)
+
+
+![image](https://github.com/user-attachments/assets/f0d74d0c-c431-4962-a65d-26a8dd05a126)
+
+
+Now, in a new terminal
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_22-33/tmp/floorplan/
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read 18-pdn.def &
+```
+![image](https://github.com/user-attachments/assets/e6732218-d670-426e-a79a-f15bb3274788)
+
+
+![image](https://github.com/user-attachments/assets/bcb16862-cac5-4ad5-a1f9-915651d8a9e3)
+
+
+When the power distribution network (PDN) generation command is issued, the system creates the PDN using the design_cts.def file as input.
+
+The PDN consists of power rings, straps, and rails:
+
+- Power is initially drawn from the VDD and VSS pads to the power rings.
+- Horizontal and vertical straps are connected to the rings to further distribute power, with these straps channeling power to the rails connected to standard cells.
+- Rails are placed at standard cell height intervals, which align with multiples of the track pitch (2.72 in this design), allowing proper power delivery to all standard cells.
+
+In this design:
+
+-Straps are placed on metal layers 4 and 5, while standard cell rails are on metal layer 1.
+-Vias are used to interconnect these layers, ensuring seamless power flow from pads to cells across the different metal levels.
+
+![image](https://github.com/user-attachments/assets/1c9f164b-9414-4d71-a9f7-6eef3cb1fe5a)
+
+Now, we perfrom detailed routing using TritonRoute:
+
+```
+echo $::env(CURRENT_DEF)
+echo $::env(ROUTING_STRATEGY)
+run_routing
+```
+
+![image](https://github.com/user-attachments/assets/eff9a773-89eb-46fd-875c-709a5526b227)
+
+![image](https://github.com/user-attachments/assets/54cc64b5-5e82-4f8b-9d14-5c536c90f4d4)
+
+
+
+Now, in a new terminal
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_22-33/results/routing/
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.def &
+```
+
+![image](https://github.com/user-attachments/assets/30e206e6-beeb-4353-8a4a-977c80ecd0bf)
+
+
+
+![image](https://github.com/user-attachments/assets/45ab9113-5985-472b-a153-51bf95404bff)
+
+Fast route guide present in `openlane/designs/picorv32a/runs/13-11_22-33/tmp/routing` 
+
+![image](https://github.com/user-attachments/assets/6f182733-d5cc-4952-95f5-314113704dbc)
+
+
+
+
+#### 4. Post-Route OpenSTA timing analysis with the extracted parasitics of the route.
+
+Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrated OpenSTA in OpenROAD
+
+```tcl
+# Command to run OpenROAD tool
+openroad
+# Reading lef file
+read_lef /openLANE_flow/designs/picorv32a/runs/13-11_22-33/tmp/merged.lef
+# Reading def file
+read_def /openLANE_flow/designs/picorv32a/runs/13-11_22-33/results/routing/picorv32a.def
+# Creating an OpenROAD database to work with
+write_db pico_route.db
+# Loading the created database in OpenROAD
+read_db pico_route.db
+# Read netlist post CTS
+read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_22-33/results/synthesis/picorv32a.synthesis_preroute.v
+# Read library for design
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+# Link design and library
+link_design picorv32a
+# Read in the custom sdc we created
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+# Setting all cloks as propagated clocks
+set_propagated_clock [all_clocks]
+# Read SPEF
+read_spef /openLANE_flow/designs/picorv32a/runs/13-11_22-33/results/routing/picorv32a.spef
+# Generating custom timing report
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+# Exit to OpenLANE flow
+exit
+```
+
+Screenshots of commands run and timing report generated
+![image](https://github.com/user-attachments/assets/bbb97f10-cdb7-4538-be9c-01797d29eb60)
+
+![image](https://github.com/user-attachments/assets/83f64ce4-896f-427a-ab94-6b25c5f9cab5)
+
+
+![image](https://github.com/user-attachments/assets/0f47ff1f-c2b7-411f-8237-1d161a4744d5)
+
+
+![image](https://github.com/user-attachments/assets/0e57d4a4-5a8f-47cb-8377-fd0bbf72f213)
+
+
+
+</details>
