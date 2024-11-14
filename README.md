@@ -5089,13 +5089,17 @@ run_placement
 Now, open a new terminal and run the below commands to load placement def in magic
 
 ```
-cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/24-03_10-03/results/placement/
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/12-11_13-40/results/placement/
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
 
 ![image](https://github.com/user-attachments/assets/908be0e4-0e37-448e-be80-abf188cb25ff)
 
+Now, select the cell and type expand in tkcon window to view internal layers of cells (your custom inverter)
 
+![image](https://github.com/user-attachments/assets/eadcc7a2-19f0-4c0f-a396-9a415e64085d)
+
+![image](https://github.com/user-attachments/assets/2197d436-8069-4bd5-acd9-42be400def16)
 
 
 **Timing analysis with ideal clocks using openSTA**
