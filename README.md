@@ -4619,14 +4619,16 @@ git clone https://github.com/nickson-jose/vsdstdcelldesign
 cd vsdstdcelldesign
 cp /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech .
 ls
-magic -T sky130A.tech sky130_inv.mag &
+magic -T sky130A.tech sky130_CHA_inv.mag &
 ```
 
-![image](https://github.com/user-attachments/assets/2eae9ce5-50b4-4f2e-a49d-8ba49fe69fd0)
+![image](https://github.com/user-attachments/assets/93132797-2daa-4c92-85dd-b7290dbad7a7)
 
 
 
-![image](https://github.com/user-attachments/assets/69ee5649-6d44-4777-a26a-6ef220179563)
+
+![image](https://github.com/user-attachments/assets/c7a53688-ad82-48f2-8379-559d6e1a52cd)
+
 
 
 
@@ -4657,27 +4659,32 @@ Inverter layout:
 
 Identify NMOS:
 
-![image](https://github.com/user-attachments/assets/5d3c737e-df6e-4a63-b17a-4d19b93057ad)
+![image](https://github.com/user-attachments/assets/2bfefe78-f597-46c2-aa8b-0253b476b75a)
+
 
 
 Identify PMOS:
 
-![image](https://github.com/user-attachments/assets/7d146297-8ea9-451f-a678-f4bbc2832d2e)
+![image](https://github.com/user-attachments/assets/caab3a52-b6fe-4a11-b9e6-e254d33f5b78)
+
 
 
 Output Y:
 
-![image](https://github.com/user-attachments/assets/8003e88c-91bb-40eb-ba70-ded053048145)
+![image](https://github.com/user-attachments/assets/832da4ee-5af8-4081-9b32-676dd59bf97c)
+
 
 
 PMOS source connected to Vpwr:
 
-![image](https://github.com/user-attachments/assets/0ae3f9d1-cdc7-43d6-9583-a6ee0a0d255b)
+![image](https://github.com/user-attachments/assets/6347465a-b591-41b0-81d4-505415e59b5e)
+
 
 
 NMOS source connected to Ground:
 
-![image](https://github.com/user-attachments/assets/7c1a5d07-8013-4367-aef1-87560858d188)
+![image](https://github.com/user-attachments/assets/8c436070-1f63-49cf-97da-9610d4e0f343)
+
 
 
 Spice extraction of inverter in Magic. Run these in the tkcon window:
@@ -4690,17 +4697,20 @@ ext2spice cthresh 0 rthresh 0
 ext2spice
 ```
 
-![image](https://github.com/user-attachments/assets/82815357-6564-45a3-a5a5-55af4ee5ac18)
+![image](https://github.com/user-attachments/assets/54215727-ef69-4557-8da0-be12c78ac0b7)
+
 
 
 To view the spice file:
 ```
 ls -ltr
-gedit sky130_inv.spice
+gedit sky130_CHA_inv.spice
 ```
-![image](https://github.com/user-attachments/assets/5dd08ba5-6cc8-4495-9b01-8472a6614c41)
+![image](https://github.com/user-attachments/assets/39d36119-5aea-4d86-8bfc-cc3c0c02455e)
 
-![image](https://github.com/user-attachments/assets/2094d0c2-0e4c-40bc-8772-58d91ccd0198)
+
+![image](https://github.com/user-attachments/assets/1f3021c9-9dce-4207-b273-67fccf915944)
+
 
 
 
@@ -4709,7 +4719,7 @@ The contents of spice file:
 ```
 * SPICE3 file created from sky130_inv.ext - technology: sky130A
 .option scale=10n
-.subckt sky130_inv A Y VPWR VGND
+.subckt sky130_CHA_inv A Y VPWR VGND
 X0 Y A VGND VGND sky130_fd_pr__nfet_01v8 ad=1.37n pd=0.148m as=1.37n ps=0.148m w=35 l=23
 X1 Y A VPWR VPWR sky130_fd_pr__pfet_01v8 ad=1.44n pd=0.152m as=1.52n ps=0.156m w=37 l=23
 C0 VPWR Y 0.11fF
@@ -4721,10 +4731,10 @@ C5 VPWR VGND 0.781fF
 .ends
 ```
 
-Now modify the `sky130_inv.spice` file to find the transient respone:
+Now modify the `sky130_CHA_inv.spice` file to find the transient respone:
 
 ```
-* SPICE3 file created from sky130_inv.ext - technology: sky130A
+* SPICE3 file created from sky130_CHA_inv.ext - technology: sky130A
 .option scale=0.01u
 .include ./libs/pshort.lib
 .include ./libs/nshort.lib
@@ -4750,15 +4760,17 @@ run
 .end
 ```
 
-![image](https://github.com/user-attachments/assets/c624eaa7-aade-4b35-977d-c3df57760e0d)
+![image](https://github.com/user-attachments/assets/6809a9c8-d819-45f4-a5b8-eb5dcf73c622)
+
 
 
 Now, simulate the spice netlist
 ```
-ngspice sky130_inv.spice
+ngspice sky130_CHA_inv.spice
 ```
 
-![image](https://github.com/user-attachments/assets/1a2588c9-ea83-455b-91f5-e0db119bb75d)
+![image](https://github.com/user-attachments/assets/4a965ab4-08e2-4c33-83da-61e90e552d09)
+
 
 
 To plot the waveform:
@@ -4769,7 +4781,10 @@ plot y vs time a
 
 
 
-![image](https://github.com/user-attachments/assets/f932e54a-9d62-4689-ba40-7f7f15736f9f)
+![image](https://github.com/user-attachments/assets/9e178e70-8616-42f2-b7de-0572ef7bf805)
+
+![image](https://github.com/user-attachments/assets/6bd1e378-c9c6-42f9-90af-f00596154630)
+
 
 
 Using this transient response, we will now characterize the cell's slew rate and propagation delay:
@@ -4781,16 +4796,18 @@ Cell Fall delay: difference in time(50% output fall) to time(50% input rise)
 
 
 20 % Rise Screenshot
-![image](https://github.com/user-attachments/assets/d44c3dae-4d26-4be0-854a-c508af86200b)
+![image](https://github.com/user-attachments/assets/79833d37-07f0-4ad4-812d-2cb4d6305d57)
+
 
 
 80 % Rise  Screenshot
 
-![image](https://github.com/user-attachments/assets/0bb7eba7-8ac3-45e3-a444-ab8d5f6fa8b7)
+![image](https://github.com/user-attachments/assets/b79646c7-b7a7-4f9e-b7cf-addf4b1399bb)
+
 
 
 ```
-Rise Transition Time = 2.23981 - 2.18013 = 0.05968 ns = 59.68 ps
+Rise Transition Time = 2.23969 - 2.17993 = 0.05976 ns = 59.76 ps
 ```
 80% fall ScreenShot
 
@@ -4798,31 +4815,34 @@ Rise Transition Time = 2.23981 - 2.18013 = 0.05968 ns = 59.68 ps
 
 20% fall ScreenShot
 
-![image](https://github.com/user-attachments/assets/73fd62ad-5ebc-4de5-a11f-287a0daa6c4c)
+![image](https://github.com/user-attachments/assets/5245f53c-eb1c-4ba7-99f4-2f702989d363)
+
 
 ```
-Fall Transition Time = 4.09326 - 4.05011 = 0.04315 ns = 43.15 ps
+Fall Transition Time = 4.09396 - 4.05069 = 0.04327 ns = 43.27 ps
 ```
 Rise Cell Delay : Time taken by output to rise to 50% − Time taken by input to fall to 50%
 50 % of 3.3V = 1.65V
 
 50% Screenshots
 
-![image](https://github.com/user-attachments/assets/6037953f-c748-4c48-a23e-f8cae6050a64)
+![image](https://github.com/user-attachments/assets/3b938c5e-8525-4d4a-b64c-2409637ae090)
+
 
 ```
-Rise cell delay = 2.20713 - 2.15011 = 0.05702 ns = 57.02 ps
+Rise cell delay = 2.20711 - 2.15 = 0.05711 ns = 57.11 ps
 ```
 Fall Cell Delay : Time taken by output to fall to 50% − Time taken by input to rise to 50%
 50 % of 3.3V = 1.65V
 
 50% Screenshots
-![image](https://github.com/user-attachments/assets/5056a34e-975f-4c78-94b4-5e1cc0415ea5)
+![image](https://github.com/user-attachments/assets/f42e0ed1-d9e8-4544-9a46-b7393e930131)
+
 
 
 
 ```
-Fall cell delay = 4.07542 - 4.05014 = 0.02528 ns = 25.28 ps
+Fall cell delay = 4.0756 - 4.0498 = 0.0258 ns = 25.8 ps
 ```
 
 
