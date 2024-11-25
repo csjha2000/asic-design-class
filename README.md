@@ -13,6 +13,7 @@
 - **TASK 12:** [Static Timing Analysis for Synthesized Risc-V Core using OpenSTA. ](#task-12)
 - **TASK 13:** [PVT Corner Analysis for Synthesized VSDBabySoC using OpenSTA](#task-13)
 - **TASK 14:** [Advanced Physical Design using OpenLane using Sky130](#task-14)
+- **TASK 15:** [OPEN-ROAD PHYSICAL DESIGN for VSDBabySoC](#task-15)
 
 # TASK 1      
 ( 16/07/2024 )
@@ -20,7 +21,7 @@
 <details>
        <summary>Create a simple C program and compile it using GCC followed by verification of the program output.</summary>
 
-## AIM : To Create a simple C program and compile it using GCC followed by verification of the program output. </summary>
+## AIM : To Create a simple C program and compile it using GCC followed by verification of the program output. 
 
 ### Step 1 : Open the text editor followed by assigning the name of the C program.
 
@@ -5520,6 +5521,365 @@ Screenshots of commands run and timing report generated
 
 ![image](https://github.com/user-attachments/assets/0e57d4a4-5a8f-47cb-8377-fd0bbf72f213)
 
+
+
+</details>
+
+
+
+
+
+
+
+
+
+# TASK 15      
+( 19/11/2024 )
+
+<details>
+       <summary> OpenROAD PHYSICAL DESIGN </summary>
+
+## Installing and setting up ORFS
+
+```
+git clone --recursive https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts
+```
+
+![1](https://github.com/user-attachments/assets/2f9a6fd0-9122-45be-a73e-4deafeb2bd86)
+
+```
+cd OpenROAD-flow-scripts
+sudo ./setup.sh
+```
+![2](https://github.com/user-attachments/assets/9d49983c-43b0-4ee6-ab11-8b4058995263)
+![3](https://github.com/user-attachments/assets/8d5ce225-cf68-4320-9889-e58af1aa2481)
+
+```
+./build_openroad.sh --local
+```
+
+![4](https://github.com/user-attachments/assets/592018b3-5434-4998-88a7-2b7fe50b5fc0)
+
+
+![5](https://github.com/user-attachments/assets/3c83b73e-c8f5-400a-9a1a-e15726096f6b)
+
+
+
+
+## Verify Installation
+
+```
+source ./env.sh
+yosys -help
+```
+![6](https://github.com/user-attachments/assets/db53d47f-8f01-48ef-92bd-26bd26c1668f)
+
+
+```
+openroad -help
+cd flow
+make
+```
+![7](https://github.com/user-attachments/assets/9dd913c8-f003-46e2-bc29-4b311ab2a549)
+
+
+![8](https://github.com/user-attachments/assets/04f4c28f-9617-4a90-a8d9-41774001ec9d)
+
+
+
+```
+make gui_final
+```
+![9](https://github.com/user-attachments/assets/d3532218-c97e-46ff-8e9a-0a4c0c527b7e)
+
+
+![10](https://github.com/user-attachments/assets/8afba1bb-3c40-4f5c-b76b-6841fd6dbb90)
+
+
+
+
+
+## ORFS Directory Structure And File Formats 
+
+![Screenshot from 2024-11-25 21-14-15](https://github.com/user-attachments/assets/868d2230-a909-4eff-b8c8-981d0167b066)
+
+
+```
+├── OpenROAD-flow-scripts             
+│   ├── docker           -> It has Docker based installation, run scripts and all saved here
+│   ├── docs             -> Documentation for OpenROAD or its flow scripts.  
+│   ├── flow             -> Files related to run RTL to GDS flow  
+|   ├── jenkins          -> It contains the regression test designed for each build update
+│   ├── tools            -> It contains all the required tools to run RTL to GDS flow
+│   ├── etc              -> Has the dependency installer script and other things
+│   ├── setup_env.sh     -> Its the source file to source all our OpenROAD rules to run the RTL to GDS flow
+```
+### Now, go to flow directory
+```
+cd flow
+ls
+```
+
+![Screenshot from 2024-11-25 21-16-18](https://github.com/user-attachments/assets/666952b4-4f15-49c4-bfb6-74ec0900aa78)
+
+```
+├── flow           
+│   ├── design           -> It has built-in examples from RTL to GDS flow across different technology nodes
+│   ├── makefile         -> The automated flow runs through makefile setup
+│   ├── platform         -> It has different technology note libraries, lef files, GDS etc 
+|   ├── tutorials        
+│   ├── util            
+│   ├── scripts             
+```
+
+
+Automated RTL2GDS Flow for VSDBabySoC:
+
+Initial Steps:
+
+- We need to create a directory `vsdbabysoc` inside `OpenROAD-flow-scripts/flow/designs/sky130hd`
+- Now create a directory `vsdbabysoc` inside `OpenROAD-flow-scripts/flow/designs/src` and include all the verilog files here.
+- Now copy the folders `gds`, `include`, `lef` and `lib` from the VSDBabySoC folder in your system into this directory.
+  - The `gds` folder would contain the files `avsddac.gds` and `avsdpll.gds`
+  - The `include` folder would contain the files `sandpiper.vh`, `sandpiper_gen.vh`, `sp_default.vh` and `sp_verilog.vh`
+  - The `gds` folder would contain the files `avsddac.lef` and `avsdpll.lef`
+  - The `lib` folder would contain the files `avsddac.lib` and `avsdpll.lib`
+- Now copy the constraints file(`vsdbabysoc_synthesis.sdc`) from the VSDBabySoC folder in your system into this directory.
+- Now copy the files(`macro.cfg` and `pin_order.cfg`) from the VSDBabySoC folder in your system into this directory.
+
+  
+- ### Now, create a `config.mk` file whose contents are shown below:
+
+```
+export DESIGN_NICKNAME = vsdbabysoc
+export DESIGN_NAME = vsdbabysoc
+export PLATFORM    = sky130hd
+
+# export VERILOG_FILES_BLACKBOX = $(DESIGN_HOME)/src/$(DESIGN_NICKNAME)/IPs/*.v
+# export VERILOG_FILES = $(sort $(wildcard $(DESIGN_HOME)/src/$(DESIGN_NICKNAME)/*.v))
+# Explicitly list the Verilog files for synthesis
+export VERILOG_FILES = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/module/vsdbabysoc.v \
+                       /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/module/rvmyth.v \
+                       /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/module/clk_gate.v
+
+export SDC_FILE      = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
+
+#export DIE_AREA   = 0 0 1500 1500
+# export CORE_AREA  = 10 10 2910 3510
+
+# export PLACE_DENSITY ?= 0.23
+
+export vsdbabysoc_DIR = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC
+
+export VERILOG_INCLUDE_DIRS = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/include
+
+# export SDC_FILE      = $(wildcard $(vsdbabysoc_DIR)/sdc/*.sdc)
+export ADDITIONAL_GDS  =/home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/gds
+export ADDITIONAL_LEFS  = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/lef
+
+export ADDITIONAL_LIBS = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/lib/avsddac.lib \
+				         /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/lib/avsdpll.lib
+# Clock Configuration (vsdbabysoc specific)
+# export CLOCK_PERIOD = 20.0
+export CLOCK_PORT = CLK
+export CLOCK_NET = $(CLOCK_PORT)
+
+# Floorplanning Configuration (vsdbabysoc specific)
+export FP_PIN_ORDER_CFG = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/layout_conf/vsdbabysoc/pin_order.cfg
+export FP_SIZING = absolute
+export DIE_AREA = 0 0 2000 2000
+export CORE_AREA = 10 10 1800 1800
+
+
+# export PL_RESIZER_HOLD_MAX_BUFFER_PERCENT = 80
+# export PL_RESIZER_HOLD_MAX_BUFFER_COUNT = 5000  # Set the buffer limit to a higher value if needed
+# export GLB_RESIZER_HOLD_MAX_BUFFER_PERCENT = 80
+
+# Hold Slack Margin Configuration
+# export PL_RESIZER_HOLD_SLACK_MARGIN = 0.01
+# export GLB_RESIZER_HOLD_SLACK_MARGIN = 0.01
+
+
+export BOTTOM_MARGIN_MULT = 50
+export TOP_MARGIN_MULT = 50
+export LEFT_MARGIN_MULT = 200
+export RIGHT_MARGIN_MULT = 200
+
+# Placement Configuration (vsdbabysoc specific)
+export MACRO_PLACEMENT_CFG = /home/chandra-shekhar-jha/VLSI/ORFS/OpenROAD-flow-scripts/flow/designs/sky130hd/VSDBabySoC/src/layout_conf/vsdbabysoc/macro.cfg
+
+# Magic Tool Configuration
+export MAGIC_ZEROIZE_ORIGIN = 0
+export MAGIC_EXT_USE_GDS = 1
+
+export SYNTH_HIERARCHICAL = 1
+
+# export RTLMP_BOUNDARY_WT = 0
+#  MACRO_PLACE_HALO = 100 100
+# export MACRO_PLACE_CHANNEL = 200 200
+
+# CTS tuning
+# export CTS_BUF_DISTANCE = 600
+# export SKIP_GATE_CLONING = 1
+
+# export SETUP_SLACK_MARGIN = 0.2
+
+# This is high, some SRAMs should probably be converted
+# to real SRAMs and not instantiated as flops
+# export SYNTH_MEMORY_MAX_BITS ?= 42000
+
+  
+```
+
+
+
+
+
+
+## Commands for synthesis:
+```
+make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk synth
+```
+
+![Screenshot from 2024-11-25 22-37-16](https://github.com/user-attachments/assets/dbf8fac9-fb1c-47c8-b3b7-ed272ccea512)
+
+
+
+![Screenshot from 2024-11-25 22-52-08](https://github.com/user-attachments/assets/a757dcd9-c004-4866-8124-fc6d2eea09a9)
+
+
+
+### Synthesis netlist:
+
+![Screenshot from 2024-11-25 22-54-25](https://github.com/user-attachments/assets/a6126f49-2774-4643-a665-de4292726ed5)
+
+
+### Synthesis log:
+![Screenshot from 2024-11-25 22-57-07](https://github.com/user-attachments/assets/da478802-d8d1-44b0-bd68-a78883820b1e)
+
+### Synthesis Check:
+
+![Screenshot from 2024-11-25 22-59-15](https://github.com/user-attachments/assets/cc3a9682-77f7-49bd-98d8-a139a688be31)
+
+
+### Synthesis Stats:
+
+
+
+![Screenshot from 2024-11-25 23-06-25](https://github.com/user-attachments/assets/e3df56d0-d74f-4fdb-99f9-e3e7e47315d0)
+
+
+![Screenshot from 2024-11-25 23-07-01](https://github.com/user-attachments/assets/746ce87a-111c-470c-842d-5062032b48d1)
+
+
+![Screenshot from 2024-11-25 23-07-31](https://github.com/user-attachments/assets/cd46a1de-c7dc-4647-bee7-e4076ab9d85a)
+
+
+
+![Screenshot from 2024-11-25 23-07-58](https://github.com/user-attachments/assets/efdd17f3-ce5d-41ab-bfb4-614c14220022)
+
+
+## Commands for floorplan:
+
+```
+make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk floorplan
+```
+
+![Screenshot from 2024-11-25 23-21-58](https://github.com/user-attachments/assets/4602adf8-3a94-4cba-bf0e-3dc1111f4096)
+
+
+![Screenshot from 2024-11-25 23-22-19](https://github.com/user-attachments/assets/45d60abd-3031-4fe9-8b1b-529d03baed03)
+
+
+```
+make gui_floorplan
+```
+![Screenshot from 2024-11-25 23-36-13](https://github.com/user-attachments/assets/651d6842-7d62-4773-ae2e-b913104c48b9)
+
+
+```
+make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk gui_floorplan
+```
+![Screenshot from 2024-11-25 23-56-27](https://github.com/user-attachments/assets/58d81730-069a-4325-9c93-64ff7a27fae4)
+
+![Screenshot from 2024-11-25 23-40-04](https://github.com/user-attachments/assets/c0cf9e40-f88f-42fc-bbb0-26e3011c85ad)
+
+
+
+## Commands for Placement:
+
+```
+
+make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk place
+
+```
+![Screenshot from 2024-11-25 23-59-42](https://github.com/user-attachments/assets/3968b903-60e8-4ef0-af51-4dba778d0165)
+
+![Screenshot from 2024-11-26 00-01-17](https://github.com/user-attachments/assets/c883d461-d66e-4c96-afbc-61a309970393)
+
+
+
+```
+make gui_place
+
+```
+
+
+![Screenshot from 2024-11-26 00-02-44](https://github.com/user-attachments/assets/3ad41160-4884-493f-8c6e-ee139474e003)
+
+## CTS Command
+
+```
+make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk cts
+```
+![Screenshot from 2024-11-26 00-08-06](https://github.com/user-attachments/assets/bd9ed1f8-5171-45f1-8441-edeba696502d)
+
+```
+make gui_cts
+```
+
+![Screenshot from 2024-11-26 00-09-07](https://github.com/user-attachments/assets/62fc1215-6f8c-4f92-ad91-122b773159dc)
+
+![Screenshot from 2024-11-26 00-13-36](https://github.com/user-attachments/assets/3604c16a-f202-400a-9b41-cf22901394bc)
+
+
+```
+make gui_route
+```
+
+![Screenshot from 2024-11-26 00-15-45](https://github.com/user-attachments/assets/27c79650-8b5d-4134-bb79-985a942b9933)
+
+![Screenshot from 2024-11-26 00-17-17](https://github.com/user-attachments/assets/e2ffadb4-62f8-4a0d-bc3e-4a970ca2dc64)
+
+
+### For Final Layout
+```
+make gui_final
+```
+![Screenshot from 2024-11-26 00-21-05](https://github.com/user-attachments/assets/879b9816-c00e-412c-a5ef-bfb2bfca7d1c)
+![Screenshot from 2024-11-26 00-23-44](https://github.com/user-attachments/assets/7a887960-1d0b-4ddb-b4a8-da80ba8f8722)
+![Screenshot from 2024-11-26 00-24-37](https://github.com/user-attachments/assets/f8da8b69-7c2c-4598-b6a5-2f56687c1e42)
+![Screenshot from 2024-11-26 00-25-27](https://github.com/user-attachments/assets/28cbdd95-7f61-4182-93eb-e7cf76da64b7)
+
+
+### To give the GDS file in the klayout type the following commands
+```
+
+ klayout -e -nn ./platforms/nangate45/FreePDK45.lyt -l ./platforms/nangate45/FreePDK45.lyp ./results/nangate45/gcd/base/6_final.gds
+```
+
+![Screenshot from 2024-11-26 00-28-30](https://github.com/user-attachments/assets/6381277c-6fc6-48c9-8d7e-1b60bdbdf7cc)
+
+![Screenshot from 2024-11-26 00-31-39](https://github.com/user-attachments/assets/affb74f1-8e4b-4bee-b71a-7a1376e8227e)
+
+
+### Route Command
+
+```
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk route
+```
+![Screenshot from 2024-11-26 00-33-58](https://github.com/user-attachments/assets/429f8342-2cd4-43b7-8c6d-8d9b89b14837)
+![Screenshot from 2024-11-26 00-37-40](https://github.com/user-attachments/assets/f9727323-ac65-4a1c-a07b-e5898e497e39)
 
 
 </details>
