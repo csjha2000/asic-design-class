@@ -5738,7 +5738,7 @@ export SYNTH_HIERARCHICAL = 1
 
 ## Commands for synthesis:
 ```
-make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk synth
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk synth
 ```
 
 ![Screenshot from 2024-11-25 22-37-16](https://github.com/user-attachments/assets/dbf8fac9-fb1c-47c8-b3b7-ed272ccea512)
@@ -5782,27 +5782,34 @@ make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk synth
 ## Commands for floorplan:
 
 ```
-make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk floorplan
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk floorplan
 ```
 
 ![Screenshot from 2024-11-25 23-21-58](https://github.com/user-attachments/assets/4602adf8-3a94-4cba-bf0e-3dc1111f4096)
 
+![Screenshot from 2024-11-26 04-26-28](https://github.com/user-attachments/assets/c31d5815-10e7-4226-9336-b36908ee2396)
 
-![Screenshot from 2024-11-25 23-22-19](https://github.com/user-attachments/assets/45d60abd-3031-4fe9-8b1b-529d03baed03)
 
 
 ```
 make gui_floorplan
 ```
-![Screenshot from 2024-11-25 23-36-13](https://github.com/user-attachments/assets/651d6842-7d62-4773-ae2e-b913104c48b9)
+![Screenshot from 2024-11-26 04-28-35](https://github.com/user-attachments/assets/c24e2454-226e-4dfe-aec3-088eed6cb996)
+
+![Screenshot from 2024-11-26 04-29-49](https://github.com/user-attachments/assets/c65ffca9-41ba-49c7-893f-98081b9beada)
+
 
 
 ```
-make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk gui_floorplan
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk gui_floorplan
 ```
-![Screenshot from 2024-11-25 23-56-27](https://github.com/user-attachments/assets/58d81730-069a-4325-9c93-64ff7a27fae4)
+![Screenshot from 2024-11-26 04-31-39](https://github.com/user-attachments/assets/a4299117-1498-4a04-a015-981da24b3f97)
 
-![Screenshot from 2024-11-25 23-40-04](https://github.com/user-attachments/assets/c0cf9e40-f88f-42fc-bbb0-26e3011c85ad)
+
+![Screenshot from 2024-11-26 04-32-13](https://github.com/user-attachments/assets/ee5845aa-edcf-48ae-8c02-f9da4d6559e5)
+
+![Screenshot from 2024-11-26 04-32-55](https://github.com/user-attachments/assets/701b5abe-e84b-409d-9f91-dfc52883a176)
+
 
 
 
@@ -5810,7 +5817,7 @@ make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk gui_floorplan
 
 ```
 
-make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk place
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk place
 
 ```
 ![Screenshot from 2024-11-25 23-59-42](https://github.com/user-attachments/assets/3968b903-60e8-4ef0-af51-4dba778d0165)
@@ -5825,12 +5832,15 @@ make gui_place
 ```
 
 
-![Screenshot from 2024-11-26 00-02-44](https://github.com/user-attachments/assets/3ad41160-4884-493f-8c6e-ee139474e003)
+![Screenshot from 2024-11-26 04-43-10](https://github.com/user-attachments/assets/97ae2943-a818-498d-b2e2-ec866dd72605)
+
+![Screenshot from 2024-11-26 04-43-46](https://github.com/user-attachments/assets/c19054f1-0f90-43b7-aa03-7349eba0ba2d)
+
 
 ## CTS Command
 
 ```
-make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk cts
+make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk cts
 ```
 ![Screenshot from 2024-11-26 00-08-06](https://github.com/user-attachments/assets/bd9ed1f8-5171-45f1-8441-edeba696502d)
 
@@ -5838,9 +5848,10 @@ make DESIGN_CONFIG=./designs/sky130hd/VSDBabySoC/config.mk cts
 make gui_cts
 ```
 
-![Screenshot from 2024-11-26 00-09-07](https://github.com/user-attachments/assets/62fc1215-6f8c-4f92-ad91-122b773159dc)
+![Screenshot from 2024-11-26 04-45-45](https://github.com/user-attachments/assets/c77d53a8-6227-4d3a-917c-31825828af6d)
 
-![Screenshot from 2024-11-26 00-13-36](https://github.com/user-attachments/assets/3604c16a-f202-400a-9b41-cf22901394bc)
+
+![Screenshot from 2024-11-26 04-46-15](https://github.com/user-attachments/assets/8ed83d6a-63a8-4051-a677-5763a26ecd17)
 
 
 ```
@@ -5878,8 +5889,10 @@ make gui_final
 ```
 make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk route
 ```
-![Screenshot from 2024-11-26 00-33-58](https://github.com/user-attachments/assets/429f8342-2cd4-43b7-8c6d-8d9b89b14837)
-![Screenshot from 2024-11-26 00-37-40](https://github.com/user-attachments/assets/f9727323-ac65-4a1c-a07b-e5898e497e39)
+![Screenshot from 2024-11-26 03-34-04](https://github.com/user-attachments/assets/9ff3a2f6-558d-4de0-8fc9-3ae207d0d205)
 
+![Screenshot from 2024-11-26 03-34-31](https://github.com/user-attachments/assets/3a4a939a-63c8-4c91-b9f5-90b340acf5fd)
+
+![Screenshot from 2024-11-26 03-34-50](https://github.com/user-attachments/assets/5b16d308-621d-4cc0-afdd-738c1ef65b1d)
 
 </details>
