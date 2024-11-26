@@ -6516,7 +6516,38 @@ make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk route
 
 
 ## VSDBabySoC Schematic :
+![Screenshot from 2024-11-26 06-31-44](https://github.com/user-attachments/assets/0b512d53-bee1-41d4-bc00-b6d6df0d49e1)
+
 ![Screenshot from 2024-11-26 05-25-51](https://github.com/user-attachments/assets/6f0bbc50-580d-4f0e-a3ee-453dbe9f652a)
+
+### QoR Report
+
+```
+make metadata
+```
+![Screenshot from 2024-11-26 06-00-28](https://github.com/user-attachments/assets/3b088b51-e0ce-4bc2-83ab-2388f47bc884)
+
+![Screenshot from 2024-11-26 06-02-19](https://github.com/user-attachments/assets/2bd149f2-0d6d-4809-9140-baf344c0e8e6)
+
+## HEATMAPS
+
+### Placement Density
+![Screenshot from 2024-11-26 06-12-49](https://github.com/user-attachments/assets/5ca51a2e-0059-49ba-839d-31f2720c6e25)
+
+### Power Density
+![Screenshot from 2024-11-26 06-13-28](https://github.com/user-attachments/assets/9de2a8fd-9d72-4e58-bbf1-8cb59fea684a)
+
+### Routing Conjestion
+![Screenshot from 2024-11-26 06-16-32](https://github.com/user-attachments/assets/bafb8beb-8da0-46b4-a101-70bafcfb0d2b)
+
+### Estimated Conjestion (RUDY)
+![Screenshot from 2024-11-26 06-17-35](https://github.com/user-attachments/assets/98556ec2-75c7-4058-bcaa-e8c3ad839f2c)
+
+### IR Drop
+![Screenshot from 2024-11-26 06-18-31](https://github.com/user-attachments/assets/cff35722-2840-46f8-937c-99931154d624)
+
+
+
 
 
 </details>
