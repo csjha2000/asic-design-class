@@ -5779,6 +5779,121 @@ make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk synth
 ![Screenshot from 2024-11-25 23-07-58](https://github.com/user-attachments/assets/efdd17f3-ce5d-41ab-bfb4-614c14220022)
 
 
+```
+
+24. Printing statistics.
+
+=== vsdbabysoc ===
+
+   Number of wires:               9843
+   Number of wire bits:           9843
+   Number of public wires:        1930
+   Number of public wire bits:    1930
+   Number of ports:                  7
+   Number of port bits:              7
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               9699
+     avsddac                         1
+     avsdpll                         1
+     sky130_fd_sc_hd__a2111o_1       1
+     sky130_fd_sc_hd__a2111oi_0      2
+     sky130_fd_sc_hd__a2111oi_2      1
+     sky130_fd_sc_hd__a2111oi_4      1
+     sky130_fd_sc_hd__a211o_1        5
+     sky130_fd_sc_hd__a211oi_1      28
+     sky130_fd_sc_hd__a211oi_2       1
+     sky130_fd_sc_hd__a21bo_2        2
+     sky130_fd_sc_hd__a21boi_0       6
+     sky130_fd_sc_hd__a21o_1        24
+     sky130_fd_sc_hd__a21oi_1     1100
+     sky130_fd_sc_hd__a21oi_2        2
+     sky130_fd_sc_hd__a21oi_4        1
+     sky130_fd_sc_hd__a221oi_1     225
+     sky130_fd_sc_hd__a22o_1       222
+     sky130_fd_sc_hd__a22oi_1      494
+     sky130_fd_sc_hd__a311oi_1     128
+     sky130_fd_sc_hd__a31o_2         1
+     sky130_fd_sc_hd__a31oi_1       63
+     sky130_fd_sc_hd__a31oi_2        2
+     sky130_fd_sc_hd__a32oi_2        1
+     sky130_fd_sc_hd__a41oi_1        1
+     sky130_fd_sc_hd__a41oi_2        2
+     sky130_fd_sc_hd__and2_0         2
+     sky130_fd_sc_hd__and2_1         8
+     sky130_fd_sc_hd__and3_1        40
+     sky130_fd_sc_hd__and3b_1        1
+     sky130_fd_sc_hd__and4_1         3
+     sky130_fd_sc_hd__buf_1         72
+     sky130_fd_sc_hd__buf_2        103
+     sky130_fd_sc_hd__buf_4         23
+     sky130_fd_sc_hd__buf_6          1
+     sky130_fd_sc_hd__clkbuf_1     779
+     sky130_fd_sc_hd__clkbuf_2       1
+     sky130_fd_sc_hd__conb_1         1
+     sky130_fd_sc_hd__dfxtp_1     1787
+     sky130_fd_sc_hd__fa_1           3
+     sky130_fd_sc_hd__ha_1         135
+     sky130_fd_sc_hd__inv_1        141
+     sky130_fd_sc_hd__inv_2          1
+     sky130_fd_sc_hd__inv_6          1
+     sky130_fd_sc_hd__mux2_2         4
+     sky130_fd_sc_hd__mux2_4         1
+     sky130_fd_sc_hd__mux2i_1       11
+     sky130_fd_sc_hd__nand2_1     2071
+     sky130_fd_sc_hd__nand2b_1      35
+     sky130_fd_sc_hd__nand3_1      461
+     sky130_fd_sc_hd__nand3b_1      38
+     sky130_fd_sc_hd__nand4_1      153
+     sky130_fd_sc_hd__nand4b_1       1
+     sky130_fd_sc_hd__nor2_1       345
+     sky130_fd_sc_hd__nor2_2        17
+     sky130_fd_sc_hd__nor2_4        11
+     sky130_fd_sc_hd__nor2b_1       53
+     sky130_fd_sc_hd__nor3_1        68
+     sky130_fd_sc_hd__nor3_2         2
+     sky130_fd_sc_hd__nor3_4         8
+     sky130_fd_sc_hd__nor3b_1        2
+     sky130_fd_sc_hd__nor4_1        33
+     sky130_fd_sc_hd__nor4_2         1
+     sky130_fd_sc_hd__nor4_4         1
+     sky130_fd_sc_hd__nor4b_1        2
+     sky130_fd_sc_hd__o2111a_1       1
+     sky130_fd_sc_hd__o2111ai_1      3
+     sky130_fd_sc_hd__o211ai_1      91
+     sky130_fd_sc_hd__o211ai_4       1
+     sky130_fd_sc_hd__o21a_1        10
+     sky130_fd_sc_hd__o21ai_0      399
+     sky130_fd_sc_hd__o21ai_1       55
+     sky130_fd_sc_hd__o21ai_2        1
+     sky130_fd_sc_hd__o21bai_1      11
+     sky130_fd_sc_hd__o221ai_1     138
+     sky130_fd_sc_hd__o22a_1        33
+     sky130_fd_sc_hd__o22ai_1       31
+     sky130_fd_sc_hd__o2bb2ai_1      3
+     sky130_fd_sc_hd__o311ai_0      35
+     sky130_fd_sc_hd__o311ai_2       1
+     sky130_fd_sc_hd__o31a_1         1
+     sky130_fd_sc_hd__o31ai_1       16
+     sky130_fd_sc_hd__o32a_1        15
+     sky130_fd_sc_hd__o32ai_1       18
+     sky130_fd_sc_hd__o41ai_1        2
+     sky130_fd_sc_hd__or2_2         12
+     sky130_fd_sc_hd__or3_1         16
+     sky130_fd_sc_hd__or3_4          3
+     sky130_fd_sc_hd__or4_1         12
+     sky130_fd_sc_hd__xnor2_1       49
+     sky130_fd_sc_hd__xor2_1         7
+
+   Area for cell type \avsddac is unknown!
+   Area for cell type \avsdpll is unknown!
+
+   Chip area for module '\vsdbabysoc': 78474.012800
+     of which used for sequential elements: 35774.310400 (45.59%)
+
+```
+
 ## Commands for floorplan:
 
 ```
@@ -6144,6 +6259,219 @@ make gui_cts
 
 ![Screenshot from 2024-11-26 04-46-15](https://github.com/user-attachments/assets/8ed83d6a-63a8-4051-a677-5763a26ecd17)
 
+CTS REPORT
+```
+
+==========================================================================
+cts final report_tns
+--------------------------------------------------------------------------
+tns 0.00
+
+==========================================================================
+cts final report_wns
+--------------------------------------------------------------------------
+wns 0.00
+
+==========================================================================
+cts final report_worst_slack
+--------------------------------------------------------------------------
+worst slack INF
+
+==========================================================================
+cts final report_clock_skew
+--------------------------------------------------------------------------
+Clock clk
+No launch/capture paths found.
+
+
+==========================================================================
+cts final report_checks -path_delay min
+--------------------------------------------------------------------------
+No paths found.
+
+==========================================================================
+cts final report_checks -path_delay max
+--------------------------------------------------------------------------
+No paths found.
+
+==========================================================================
+cts final report_checks -unconstrained
+--------------------------------------------------------------------------
+Startpoint: core.CPU_valid_taken_br_a4$_DFF_P_ (rising edge-triggered flip-flop)
+Endpoint: core.CPU_Xreg_value_a4[15][13]$_SDFFE_PP0P_
+          (rising edge-triggered flip-flop)
+Path Group: unconstrained
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.75    0.00    0.00 ^ core.CPU_valid_taken_br_a4$_DFF_P_/CLK (sky130_fd_sc_hd__dfxtp_1)
+     2    0.01    0.04    0.46    0.46 v core.CPU_valid_taken_br_a4$_DFF_P_/Q (sky130_fd_sc_hd__dfxtp_1)
+                                         core.CPU_valid_taken_br_a4 (net)
+                  0.04    0.00    0.46 v _07913_/B (sky130_fd_sc_hd__or4_4)
+    41    0.23    0.36    0.84    1.30 v _07913_/X (sky130_fd_sc_hd__or4_4)
+                                         _02930_ (net)
+                  0.36    0.01    1.31 v load_slew103/A (sky130_fd_sc_hd__buf_16)
+    36    0.28    0.15    0.35    1.66 v load_slew103/X (sky130_fd_sc_hd__buf_16)
+                                         net103 (net)
+                  0.15    0.01    1.67 v max_cap102/A (sky130_fd_sc_hd__buf_16)
+    24    0.27    0.15    0.26    1.94 v max_cap102/X (sky130_fd_sc_hd__buf_16)
+                                         net102 (net)
+                  0.16    0.04    1.97 v _07915_/A (sky130_fd_sc_hd__clkinv_16)
+    43    0.48    0.31    0.25    2.22 ^ _07915_/Y (sky130_fd_sc_hd__clkinv_16)
+                                         _02932_ (net)
+                  0.38    0.11    2.33 ^ _09981_/C (sky130_fd_sc_hd__nor3_2)
+     2    0.02    0.10    0.13    2.46 v _09981_/Y (sky130_fd_sc_hd__nor3_2)
+                                         _04371_ (net)
+                  0.10    0.00    2.46 v _09982_/B1 (sky130_fd_sc_hd__a21oi_4)
+     6    0.10    0.70    0.57    3.03 ^ _09982_/Y (sky130_fd_sc_hd__a21oi_4)
+                                         _04372_ (net)
+                  0.70    0.00    3.03 ^ _09988_/A2 (sky130_fd_sc_hd__o21ai_4)
+    16    0.11    0.31    0.36    3.39 v _09988_/Y (sky130_fd_sc_hd__o21ai_4)
+                                         _04378_ (net)
+                  0.31    0.00    3.39 v _11217_/A (sky130_fd_sc_hd__nor3_4)
+    14    0.11    1.07    0.96    4.35 ^ _11217_/Y (sky130_fd_sc_hd__nor3_4)
+                                         _05443_ (net)
+                  1.07    0.00    4.35 ^ wire20/A (sky130_fd_sc_hd__buf_8)
+    10    0.11    0.19    0.30    4.65 ^ wire20/X (sky130_fd_sc_hd__buf_8)
+                                         net20 (net)
+                  0.20    0.01    4.66 ^ _11238_/B (sky130_fd_sc_hd__nand2_4)
+     5    0.04    0.22    0.13    4.79 v _11238_/Y (sky130_fd_sc_hd__nand2_4)
+                                         _05460_ (net)
+                  0.22    0.00    4.79 v _11240_/B1 (sky130_fd_sc_hd__o221ai_1)
+     1    0.00    0.22    0.23    5.02 ^ _11240_/Y (sky130_fd_sc_hd__o221ai_1)
+                                         _00708_ (net)
+                  0.22    0.00    5.02 ^ core.CPU_Xreg_value_a4[15][13]$_SDFFE_PP0P_/D (sky130_fd_sc_hd__dfxtp_1)
+                                  5.02   data arrival time
+-----------------------------------------------------------------------------
+(Path is unconstrained)
+
+
+
+==========================================================================
+cts final report_check_types -max_slew -max_cap -max_fanout -violators
+--------------------------------------------------------------------------
+
+==========================================================================
+cts final max_slew_check_slack
+--------------------------------------------------------------------------
+0.05385647714138031
+
+==========================================================================
+cts final max_slew_check_limit
+--------------------------------------------------------------------------
+1.4951549768447876
+
+==========================================================================
+cts final max_slew_check_slack_limit
+--------------------------------------------------------------------------
+0.0360
+
+==========================================================================
+cts final max_fanout_check_slack
+--------------------------------------------------------------------------
+1.0000000150474662e+30
+
+==========================================================================
+cts final max_fanout_check_limit
+--------------------------------------------------------------------------
+1.0000000150474662e+30
+
+==========================================================================
+cts final max_capacitance_check_slack
+--------------------------------------------------------------------------
+0.005084257572889328
+
+==========================================================================
+cts final max_capacitance_check_limit
+--------------------------------------------------------------------------
+0.19410200417041779
+
+==========================================================================
+cts final max_capacitance_check_slack_limit
+--------------------------------------------------------------------------
+0.0262
+
+==========================================================================
+cts final max_slew_violation_count
+--------------------------------------------------------------------------
+max slew violation count 0
+
+==========================================================================
+cts final max_fanout_violation_count
+--------------------------------------------------------------------------
+max fanout violation count 0
+
+==========================================================================
+cts final max_cap_violation_count
+--------------------------------------------------------------------------
+max cap violation count 0
+
+==========================================================================
+cts final setup_violation_count
+--------------------------------------------------------------------------
+setup violation count 0
+
+==========================================================================
+cts final hold_violation_count
+--------------------------------------------------------------------------
+hold violation count 0
+
+==========================================================================
+cts final report_checks -path_delay max reg to reg
+--------------------------------------------------------------------------
+No paths found.
+
+==========================================================================
+cts final report_checks -path_delay min reg to reg
+--------------------------------------------------------------------------
+No paths found.
+
+==========================================================================
+cts final critical path target clock latency max path
+--------------------------------------------------------------------------
+0
+
+==========================================================================
+cts final critical path target clock latency min path
+--------------------------------------------------------------------------
+0
+
+==========================================================================
+cts final critical path source clock latency min path
+--------------------------------------------------------------------------
+0
+
+==========================================================================
+cts final critical path delay
+--------------------------------------------------------------------------
+-1
+
+==========================================================================
+cts final critical path slack
+--------------------------------------------------------------------------
+0
+
+==========================================================================
+cts final slack div critical path delay
+--------------------------------------------------------------------------
+0.000000
+
+==========================================================================
+cts final report_power
+--------------------------------------------------------------------------
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             9.16e-12   1.11e-11   1.45e-08   1.46e-08  49.9%
+Combinational          1.89e-11   4.96e-11   1.46e-08   1.46e-08  50.1%
+Clock                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  2.81e-11   6.07e-11   2.91e-08   2.92e-08 100.0%
+                           0.1%       0.2%      99.7%
+```
 
 ```
 make gui_route
@@ -6185,5 +6513,10 @@ make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk route
 ![Screenshot from 2024-11-26 03-34-31](https://github.com/user-attachments/assets/3a4a939a-63c8-4c91-b9f5-90b340acf5fd)
 
 ![Screenshot from 2024-11-26 03-34-50](https://github.com/user-attachments/assets/5b16d308-621d-4cc0-afdd-738c1ef65b1d)
+
+
+## VSDBabySoC Schematic :
+![Screenshot from 2024-11-26 05-25-51](https://github.com/user-attachments/assets/6f0bbc50-580d-4f0e-a3ee-453dbe9f652a)
+
 
 </details>
